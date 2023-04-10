@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tabbar_height">48dp</dimen>
+    <dimen name="tabs_margin">4dp</dimen>
+    <dimen name="card_view_corner_radius">16dp</dimen>
+    <dimen name="card_view_margin">16dp</dimen>
+    <dimen name="card_min_height">240dp</dimen>
+    <dimen name="fab_margin">32dp</dimen>
+
+    <dimen name="app_bar_text_size">24sp</dimen>
+</resources>

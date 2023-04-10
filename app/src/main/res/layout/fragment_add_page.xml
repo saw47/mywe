@@ -1,0 +1,30 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ui.AddItemFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="FRAGMENT2\nFRAGMENT2\nFRAGMENT2\nFRAGMENT2\nFRAGMENT2\nFRAGMENT2\nFRAGMENT2\nFRAGMENT2\n"
+        >
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/fragment_add_item_text"
+        tools:itemCount="1"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:contentDescription="@string/add_new_note_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_done_outline_24"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
