@@ -1,0 +1,58 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "204b656755deb902b4fe9fc2e6f94c75",
+    "entities": [
+      {
+        "tableName": "noteTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `textNote` TEXT, `deadLine` INTEGER, `delayReminder` INTEGER NOT NULL, `important` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "mNumber",
+            "columnName": "number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mTextNote",
+            "columnName": "textNote",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mDeadLine",
+            "columnName": "deadLine",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mDelayReminder",
+            "columnName": "delayReminder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mImportant",
+            "columnName": "important",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "number"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '204b656755deb902b4fe9fc2e6f94c75')"
+    ]
+  }
+}

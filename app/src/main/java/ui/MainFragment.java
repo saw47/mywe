@@ -30,6 +30,7 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
         binding = FragmentMainBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         return binding.getRoot();
     }
 

@@ -8,19 +8,16 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import object.Note;
-
 @Dao
 public interface NoteDao {
 
     @Query("SELECT * FROM noteTable ORDER BY number ASC")
-    LiveData<List<Note>> getAll();
-
+    LiveData<List<NoteEntity>> getAll();
 
     @Delete
-    void delete();
+    void delete(NoteEntity noteEntity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Note note);
+    void insert(NoteEntity noteEntity);
 
 }

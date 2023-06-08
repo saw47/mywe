@@ -3,16 +3,15 @@ package db;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import object.Note;
-
-abstract class NoteRoomDatabase extends RoomDatabase {
+@Database(entities = {NoteEntity.class}, version = 1)
+public abstract class NoteRoomDatabase extends RoomDatabase {
     abstract NoteDao noteDao();
 
     private static volatile NoteRoomDatabase INSTANCE;
@@ -25,7 +24,7 @@ abstract class NoteRoomDatabase extends RoomDatabase {
             synchronized (NoteRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    NoteRoomDatabase.class, "word_database")
+                                    NoteRoomDatabase.class, "note_database")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

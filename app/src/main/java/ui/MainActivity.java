@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         model = new ViewModelProvider(this).get(ViewModelMain.class);
-
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {

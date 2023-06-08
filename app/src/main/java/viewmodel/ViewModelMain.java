@@ -1,12 +1,16 @@
 package viewmodel;
 
-import android.util.Log;
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 
-import java.lang.System;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+public class ViewModelMain extends AndroidViewModel {
 
-public class ViewModelMain extends ViewModel {
+    public ViewModelMain(@NonNull Application application) {
+        super(application);
+    }
+
+
 
 }
 

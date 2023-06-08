@@ -13,11 +13,22 @@ class NoteEntity {
     int mNumber;
     @ColumnInfo(name = "textNote")
     String mTextNote;
-    @Nullable
     @ColumnInfo(name = "deadLine")
     Long mDeadLine;
     @ColumnInfo(name = "delayReminder")
     int mDelayReminder;
     @ColumnInfo(name = "important")
     boolean mImportant;
+
+    NoteEntity(int mNumber,
+               String mTextNote,
+               Long mDeadLine,
+               int mDelayReminder,
+               boolean mImportant) {
+        this.mNumber = mNumber;
+        this.mTextNote = mTextNote;
+        this.mDeadLine = mDeadLine;
+        this.mDelayReminder = mDelayReminder;
+        this.mImportant = mImportant;
+    }
 }

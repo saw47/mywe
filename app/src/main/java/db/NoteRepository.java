@@ -1,18 +1,15 @@
 package db;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
-
 import object.Note;
 
-class NoteRepository {
+public class NoteRepository {
     private NoteDao mNoteDao;
-    private LiveData<List<Note>> mAllNotes;
+    private LiveData<List<NoteEntity>> mAllNotes;
 
-    NoteRepository(Application application) {
+    public NoteRepository(Application application) {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
         mNoteDao = db.noteDao();
         mAllNotes = mNoteDao.getAll();
@@ -20,7 +17,13 @@ class NoteRepository {
 
     void insert(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mNoteDao.insert(note);
+            mNoteDao.insert(Transform.toEntity(note));
+        });
+    }
+
+    void delete(Note note) {
+        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mNoteDao.delete(Transform.toEntity(note));
         });
     }
 }
