@@ -19,13 +19,6 @@
                 android:layout_height="160dp"
                 app:layout_collapseMode="parallax"
                 >
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/collapsed_background"
-                    android:scaleType="centerCrop"
-                    tools:ignore="ContentDescription">
-                </ImageView>
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/menu_button"
                     android:layout_width="wrap_content"

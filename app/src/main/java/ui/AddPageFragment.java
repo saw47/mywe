@@ -1,5 +1,6 @@
 package ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.github.saw47.mywe.databinding.FragmentAddPageBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import viewmodel.ViewModelMain;
 
@@ -39,6 +42,12 @@ public class AddPageFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
         binding = FragmentAddPageBinding.inflate(inflater, container, false);
 
+        binding.textFieldValue.requestFocus();
+        ((InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(
+                InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY
+        );
+
         if (model.tempNote != null) {
             binding.textFieldValue.setText(model.tempNote.getTextNote());
             //TODO Add fill another fields
@@ -54,10 +63,14 @@ public class AddPageFragment extends Fragment {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
-
-
-
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStop() {
+        ((InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(binding.textFieldValue.getWindowToken(), 0);
+        super.onStop();
     }
 
 }

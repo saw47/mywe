@@ -10,11 +10,12 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
 import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
 
 
-import util.SingleLiveEvent;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
         binding.menuButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "¯\\_(ツ)_/¯  Yet not implemented", Toast.LENGTH_SHORT);
+                toast.show();
+                //TODO not implemented
             }
         });
 
