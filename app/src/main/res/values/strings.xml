@@ -6,7 +6,7 @@
     <string name="sawe_item_button">save</string>
     <string name="type_something">type something</string>
     <string name="all">All</string>
-    <string name="filtered">Filtered</string>
+    <string name="old">Old</string>
     <string name="app_name">My Week</string>
     <string name="title_activity_app">AppActivity</string>
     <!-- Strings used for fragments for navigation -->

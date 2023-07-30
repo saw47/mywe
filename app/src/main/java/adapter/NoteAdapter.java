@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.FeedItemCardBinding;
 
 import java.util.List;
@@ -34,7 +33,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     @SuppressLint("NotifyDataSetChanged")
     public void refreshListData(List<Note> newData) {
         this.data = newData;
-        //notifyDataSetChanged();
     }
 
 
@@ -75,9 +73,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             @SuppressLint("ResourceAsColor")
             @Override
             public boolean onLongClick(View v) {
-                v.setBackgroundColor(R.color.md_theme_dark_onPrimary); //TODO temp
                 v.setAlpha(0.5F);
-                listener.onframelongclick(note);
+                listener.onFrameLongClick(note);
                 Log.d("MW-NA", "onLongClick " + note.getNumber() + " " + note.getTextNote());
                 return true;
             }

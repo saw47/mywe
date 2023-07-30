@@ -14,6 +14,7 @@ import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
 
 
+import util.SingleLiveEvent;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
@@ -85,18 +86,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        model.selectAllNotesEventState.observe(this, new Observer() {
+
+        model.noteIsSelectedEvent.observe(this, new Observer() {
             @Override
             public void onChanged(Object o) {
-                if (Boolean.TRUE.equals(model.selectAllNotesEventState.getValue())) {
-                    state = MAIN_FRAGMENT_DEL_ITEM;
-                    showDeleteItemFragmentAttr();
+                   if (Boolean.TRUE.equals(model.noteIsSelectedEvent.getValue())) {
+                       state = MAIN_FRAGMENT_DEL_ITEM;
+                       showDeleteItemFragmentAttr();
+                   }
                 }
-            }
         });
 
-         */
 
         setContentView(binding.getRoot());
     }
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
+                model.clearTempEntity();
                 break;
             case ADD_ITEM_FRAGMENT:
                 model.clearTempEntity();
@@ -113,11 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 showMainFragmentAttr();
                 break;
             case MAIN_FRAGMENT_DEL_ITEM:
-                if (!model.tempSelectedNotes.isEmpty()) {
-                    model.clearTempEntity();
-                    state = MAIN_FRAGMENT_GENERAL;
-                    showMainFragmentAttr();
-                }
+                model.clearTempEntity();
+                state = MAIN_FRAGMENT_GENERAL;
+                showMainFragmentAttr();
                 break;
         }
     }
@@ -147,9 +146,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case MAIN_FRAGMENT_DEL_ITEM:
                 Log.d(TAG, "fabOnClickHandler case MAIN_FRAGMENT_DEL_ITEM");
-                //model.deleteNotes();
+                model.deleteNotes();
                 state = MAIN_FRAGMENT_GENERAL;
                 showMainFragmentAttr();
+                model.clearTempEntity();
                 break;
         }
     }

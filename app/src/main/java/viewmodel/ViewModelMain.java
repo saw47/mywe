@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 import db.NoteRepository;
 import listener.NoteCardClickListener;
@@ -29,10 +31,15 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     private MutableLiveData<SingleLiveEvent<Note>> frameClicked = new MutableLiveData<>();
     public LiveData<SingleLiveEvent<Note>> frameClickedSingleLiveEvent = frameClicked;
 
+    private MutableLiveData<Boolean> noteIsSelected = new MutableLiveData<>();
+    public LiveData<Boolean> noteIsSelectedEvent = noteIsSelected;
+
+
     public ViewModelMain(Application application) {
         super(application);
         repository = new NoteRepository(application);
         this.data = repository.allNotesLiveData;
+        noteIsSelected.setValue(false);
     }
 
     public void saveNoteOnClick() {
@@ -60,23 +67,38 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         clearTempEntity();
     }
 
-    @Override
-    public void onFrameClick(Note note) {
-        tempNote = note;
-        frameClicked.setValue(new SingleLiveEvent<>(note));
+    public void deleteNotes() {
+        for (Note tempSelectedNote : tempSelectedNotes) {
+            repository.delete(tempSelectedNote);
+        }
     }
 
     @Override
-    public void onframelongclick(Note note) {
-        //TODO yet not impl
-
+    public void onFrameClick(Note note)
+    {
+        if (Boolean.FALSE.equals(noteIsSelected.getValue()))
+        {
+            Log.d(TAG, "!event.getContentIfNotHandled()");
+            tempNote = note;
+            frameClicked.setValue(new SingleLiveEvent<>(note));
+        }
     }
+
+    @Override
+    public void onFrameLongClick(Note note)
+    {
+        noteIsSelected.setValue(true);
+        tempSelectedNotes.add(note);
+    }
+
+
 
     public void clearTempEntity()
     {
         tempNote = null;
         tempText = null;
         tempSelectedNotes.clear();
+        noteIsSelected.setValue(false);
     }
 }
 

@@ -61,35 +61,17 @@ public class MainFragment extends Fragment {
         });
 
 
-        binding.getRoot().setOnKeyListener(new View.OnKeyListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.d(TAG, "KEYCODE_BACK pressed");
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    adapter.refreshListData(notesLiveData.getValue());
-                    adapter.notifyDataSetChanged();
-                    Log.d(TAG, "KEYCODE_BACK pressed");
-                    return true;
-                }
-
-                return false;
-            }
-        });
-
-
-        /*
-        model.selectAllNotesEventState.observe(getViewLifecycleOwner(), new Observer() {
+        model.noteIsSelectedEvent.observe(getViewLifecycleOwner(), new Observer() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged (Object o) {
-                if (!Boolean.FALSE.equals(model.selectAllNotesEventState.getValue()))
+                if (Boolean.FALSE.equals(model.noteIsSelectedEvent.getValue()))
                 {
-                    adapter.unselectAllNotes();
+                    binding.mainRv.setAdapter(adapter);
                 }
             }
         });
-         */
+
 
         return binding.getRoot();
     }

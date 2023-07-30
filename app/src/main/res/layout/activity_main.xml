@@ -70,7 +70,7 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:text="@string/filtered" />
+                            android:text="@string/old" />
                     </com.google.android.material.tabs.TabLayout>
                 </FrameLayout>
             </com.google.android.material.appbar.MaterialToolbar>
