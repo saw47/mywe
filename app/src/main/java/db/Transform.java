@@ -14,11 +14,11 @@ public class Transform {
     }
 
     public static Note toNote(NoteEntity entity) {
-        return new Note(entity.mNumber,
-                        entity.mTextNote,
-                        entity.mDeadLine,
-                        entity.mDelayReminder,
-                        entity.mImportant
+        return new Note(entity.entityNumber,
+                        entity.entityTextNote,
+                        entity.entityDeadLine,
+                        entity.entityDelayReminder,
+                        entity.entityImportant
         );
     }
 }

@@ -4,23 +4,28 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.FragmentAddPageBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import viewmodel.ViewModelMain;
 
-public class AddItemFragment extends Fragment {
+public class AddPageFragment extends Fragment {
 
     private FragmentAddPageBinding binding;
     private ViewModelMain model;
+    private final String TAG = "MW-APF";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,15 +35,29 @@ public class AddItemFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
         binding = FragmentAddPageBinding.inflate(inflater, container, false);
+
+        if (model.tempNote != null) {
+            binding.textFieldValue.setText(model.tempNote.getTextNote());
+            //TODO Add fill another fields
+        }
+
+
+        binding.textFieldValue.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                model.tempText = binding.textFieldValue.getText().toString();
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+
+
         return binding.getRoot();
     }
 
-    public static AddItemFragment newInstance() {
-        AddItemFragment fragment = new AddItemFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 }

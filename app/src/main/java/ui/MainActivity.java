@@ -2,11 +2,11 @@ package ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import androidx.fragment.app.FragmentManager;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     private int state;
 
-    private final static int MAIN_FRAGMENT = 2;
+    private final String TAG = "MW-MA";
+
+    private final static int MAIN_FRAGMENT_DEL_ITEM = 0;
+    private final static int MAIN_FRAGMENT_GENERAL = 2;
     private final static int ADD_ITEM_FRAGMENT = 4;
     private final static String nameVariableKey = "FRAGMENT_STATE";
     private final static String STACK = "MainStack";
@@ -51,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
-            Log.d("NAV", "onCreate savedInstanceState == null");
-            state = MAIN_FRAGMENT;
+            Log.d(TAG, "onCreate savedInstanceState == null");
+            state = MAIN_FRAGMENT_GENERAL;
             showMainFragmentAttr();
             fragmentManager.beginTransaction()
                     .setReorderingAllowed(true)
@@ -62,32 +65,96 @@ public class MainActivity extends AppCompatActivity {
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                switch (state) {
-                    case MAIN_FRAGMENT:
-                        Log.d("NAV", "onClick case MAIN_FRAGMENT");
-                        state = ADD_ITEM_FRAGMENT;
-                        showAddPageFragmentAttr();
-                        fragmentManager.beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.host_fragment, AddItemFragment.class, null)
-                                .addToBackStack(STACK)
-                                .commit();
-                        break;
-                    case ADD_ITEM_FRAGMENT:
-                        Log.d("NAV", "onClick case ADD_ITEM_FRAGMENT");
-                        state = MAIN_FRAGMENT;
-                        showMainFragmentAttr();
-                        fragmentManager.beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.host_fragment, MainFragment.class, null)
-                                .addToBackStack(STACK)
-                                .commit();
-                        break;
+                fabOnClickHandler();
+            }
+        });
+
+        binding.menuButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO
+            }
+        });
+
+        model.frameClickedSingleLiveEvent.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                if (state != MAIN_FRAGMENT_DEL_ITEM)
+                {
+                    fabOnClickHandler();
                 }
             }
         });
+
+        /*
+        model.selectAllNotesEventState.observe(this, new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                if (Boolean.TRUE.equals(model.selectAllNotesEventState.getValue())) {
+                    state = MAIN_FRAGMENT_DEL_ITEM;
+                    showDeleteItemFragmentAttr();
+                }
+            }
+        });
+
+         */
+
         setContentView(binding.getRoot());
     }
+
+    @Override
+    public void onBackPressed() {
+        switch (state) {
+            case MAIN_FRAGMENT_GENERAL:
+                break;
+            case ADD_ITEM_FRAGMENT:
+                model.clearTempEntity();
+                state = MAIN_FRAGMENT_GENERAL;
+                fragmentManager.popBackStack();
+                showMainFragmentAttr();
+                break;
+            case MAIN_FRAGMENT_DEL_ITEM:
+                if (!model.tempSelectedNotes.isEmpty()) {
+                    model.clearTempEntity();
+                    state = MAIN_FRAGMENT_GENERAL;
+                    showMainFragmentAttr();
+                }
+                break;
+        }
+    }
+
+    public void fabOnClickHandler()
+    {
+        switch (state) {
+            case MAIN_FRAGMENT_GENERAL:
+                Log.d(TAG, "fabOnClickHandler case MAIN_FRAGMENT");
+                state = ADD_ITEM_FRAGMENT;
+                showAddPageFragmentAttr();
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.host_fragment, AddPageFragment.class, null)
+                        .addToBackStack(STACK)
+                        .commit();
+                break;
+            case ADD_ITEM_FRAGMENT:
+                Log.d(TAG, "fabOnClickHandler case ADD_ITEM_FRAGMENT");
+                model.saveNoteOnClick();
+                state = MAIN_FRAGMENT_GENERAL;
+                showMainFragmentAttr();
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.host_fragment, MainFragment.class, null)
+                        .commit();
+                break;
+            case MAIN_FRAGMENT_DEL_ITEM:
+                Log.d(TAG, "fabOnClickHandler case MAIN_FRAGMENT_DEL_ITEM");
+                //model.deleteNotes();
+                state = MAIN_FRAGMENT_GENERAL;
+                showMainFragmentAttr();
+                break;
+        }
+    }
+
+
 
     public void showAddPageFragmentAttr(){
         binding.fab.setImageResource(R.drawable.ic_baseline_done_outline_24);
@@ -100,5 +167,11 @@ public class MainActivity extends AppCompatActivity {
         binding.menuButton.show();
         binding.typeSomethingTextView.setVisibility(View.GONE);
         binding.tabsFrameLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void showDeleteItemFragmentAttr(){
+        binding.fab.setImageResource(R.drawable.ic_baseline_delete_24);
+        binding.menuButton.hide();
+        binding.tabsFrameLayout.setVisibility(View.GONE);
     }
 }

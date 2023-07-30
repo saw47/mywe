@@ -1,37 +1,42 @@
 package adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.saw47.mywe.R;
-import com.github.saw47.mywe.databinding.FragmentAddPageBinding;
-import com.github.saw47.mywe.databinding.FragmentMainBinding;
-import com.github.saw47.mywe.databinding.FragmentMainItemBinding;
+import com.github.saw47.mywe.databinding.FeedItemCardBinding;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import listener.ItemClickListener;
+import listener.NoteCardClickListener;
 import object.Note;
-import ui.MainItemFragment;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+    private final String TAG = "MW-NA";
 
-    private final List<Note> data;
-    private ItemClickListener clickListener;
-    private final FragmentMainItemBinding binding;
+    private List<Note> data;
+    private FeedItemCardBinding binding;
+    private LayoutInflater inflater;
+    private NoteCardClickListener listener;
 
-    NoteAdapter(Context context, List<Note> data) {
+    public NoteAdapter(Context context, List<Note> data, NoteCardClickListener listener) {
         this.data = data;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        this.binding = FragmentMainItemBinding.inflate(inflater);
+        this.inflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void refreshListData(List<Note> newData) {
+        this.data = newData;
+        //notifyDataSetChanged();
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         Note note;
@@ -40,36 +45,44 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             super(view);
         }
 
-        public void bind(Note note, FragmentMainItemBinding binding) {
+        public void bind(Note note, FeedItemCardBinding binding) {
             this.note = note;
             binding.text.setText(note.getTextNote());
-            binding.deadLine.setText(String.valueOf(note.getDeadLine()));
-            /*
-            private final int number;
-            private final String textNote;
-            private final Long deadLine;
-            private final int delayReminder;
-            private final boolean important;
-             */
         }
-
     }
 
-    // Create new views (invoked by the layout manager)
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
+        binding = FeedItemCardBinding.inflate(inflater, viewGroup, false);
         return new ViewHolder(binding.getRoot());
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         Note note = data.get(position);
         viewHolder.bind(note, binding);
+
+        binding.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFrameClick(note);
+                Log.d("MW-NA", "onFrameClick " + note.getNumber() + " " + note.getTextNote());
+            }
+        });
+
+        binding.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public boolean onLongClick(View v) {
+                v.setBackgroundColor(R.color.md_theme_dark_onPrimary); //TODO temp
+                v.setAlpha(0.5F);
+                listener.onframelongclick(note);
+                Log.d("MW-NA", "onLongClick " + note.getNumber() + " " + note.getTextNote());
+                return true;
+            }
+        });
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

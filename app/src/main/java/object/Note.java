@@ -1,14 +1,18 @@
 package object;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+
 public final class Note {
 
-    private final int number;
-    private final String textNote;
-    private final Long deadLine;
-    private final int delayReminder;
-    private final boolean important;
+    private int number = 0;
+    private String textNote;
+    private Long deadLine = 0L;
+    private int delayReminder = 0;
+    private boolean important = false;
 
-    public Note(int number, String textNote, Long deadLine, int delayReminder, boolean important)
+    public Note(int number,String textNote, Long deadLine , int delayReminder, boolean important)
     {
         this.number = number;
         this.textNote = textNote;
@@ -17,9 +21,24 @@ public final class Note {
         this.important = important;
     }
 
+
+    public Note(String textNote, Long deadLine , int delayReminder, boolean important)
+    {
+        this.textNote = textNote;
+        this.deadLine = deadLine;
+        this.delayReminder = delayReminder;
+        this.important = important;
+    }
+
+    public Note(String textNote)
+    {
+        this.textNote = textNote;
+    }
+
     public int getNumber(){
         return number;
     }
+
     public String getTextNote() {
         return textNote;
     }
@@ -35,6 +54,7 @@ public final class Note {
     public boolean getImportant(){
         return important;
     }
+
 }
 
 

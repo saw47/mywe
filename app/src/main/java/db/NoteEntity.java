@@ -1,6 +1,5 @@
 package db;
 
-import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,25 +9,26 @@ import androidx.room.PrimaryKey;
 class NoteEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "number")
-    int mNumber;
+    int entityNumber = 0;
     @ColumnInfo(name = "textNote")
-    String mTextNote;
+    String entityTextNote;
     @ColumnInfo(name = "deadLine")
-    Long mDeadLine;
+    Long entityDeadLine;
     @ColumnInfo(name = "delayReminder")
-    int mDelayReminder;
+    int entityDelayReminder;
     @ColumnInfo(name = "important")
-    boolean mImportant;
+    boolean entityImportant;
 
-    NoteEntity(int mNumber,
-               String mTextNote,
-               Long mDeadLine,
-               int mDelayReminder,
-               boolean mImportant) {
-        this.mNumber = mNumber;
-        this.mTextNote = mTextNote;
-        this.mDeadLine = mDeadLine;
-        this.mDelayReminder = mDelayReminder;
-        this.mImportant = mImportant;
+    NoteEntity(int entityNumber,
+               String entityTextNote,
+               Long entityDeadLine,
+               int entityDelayReminder,
+               boolean entityImportant) {
+
+        this.entityNumber = entityNumber;
+        this.entityTextNote = entityTextNote;
+        this.entityDeadLine = entityDeadLine;
+        this.entityDelayReminder = entityDelayReminder;
+        this.entityImportant = entityImportant;
     }
 }

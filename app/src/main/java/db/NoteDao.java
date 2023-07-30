@@ -5,19 +5,23 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
 public interface NoteDao {
 
-    @Query("SELECT * FROM noteTable ORDER BY number ASC")
-    LiveData<List<NoteEntity>> getAll();
+    @Query("SELECT * FROM noteTable ORDER BY number DESC")
+    List<NoteEntity> getAll();
 
     @Delete
-    void delete(NoteEntity noteEntity);
+    int delete(NoteEntity noteEntity);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(NoteEntity noteEntity);
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    int update(NoteEntity noteEntity);
 
 }

@@ -2,23 +2,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ui.MainItemFragment"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         >
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/card_view_corner_radius"
             android:layout_margin="@dimen/card_view_margin"
+            android:background="@android:color/transparent"
             >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -63,7 +67,6 @@
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="180dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/flags"
                     tools:text="TEEEEEXXXXTTTTTT \n text \n ttteeext"
