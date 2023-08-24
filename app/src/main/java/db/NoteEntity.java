@@ -4,9 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
+import object.Note;
+
 
 @Entity(tableName = "noteTable")
-class NoteEntity {
+public class NoteEntity {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "number")
     int entityNumber = 0;

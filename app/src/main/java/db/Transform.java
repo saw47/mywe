@@ -14,11 +14,11 @@ public class Transform {
     }
 
     public static Note toNote(NoteEntity entity) {
-        return new Note(entity.entityNumber,
-                        entity.entityTextNote,
-                        entity.entityDeadLine,
-                        entity.entityDelayReminder,
-                        entity.entityImportant
-        );
+        return new Note.Builder(entity.entityTextNote)
+                .number(entity.entityNumber)
+                .deadLine(entity.entityDeadLine)
+                .delayReminder(entity.entityDelayReminder)
+                .important(entity.entityImportant)
+                .build();
     }
 }

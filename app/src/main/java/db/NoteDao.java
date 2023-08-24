@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoteDao {
 
     @Query("SELECT * FROM noteTable ORDER BY number DESC")
-    List<NoteEntity> getAll();
+    LiveData<List<NoteEntity>> getAll();
 
     @Delete
     int delete(NoteEntity noteEntity);

@@ -7,40 +7,107 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.saw47.mywe.databinding.FeedItemCardBinding;
 
 import java.util.List;
+import java.util.Objects;
 
+import db.NoteEntity;
+import db.Transform;
 import listener.NoteCardClickListener;
 import object.Note;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> {
     private final String TAG = "MW-NA";
 
-    private List<Note> data;
+    private final LiveData<List<Note>> notes;
     private FeedItemCardBinding binding;
-    private LayoutInflater inflater;
-    private NoteCardClickListener listener;
+    private final LayoutInflater inflater;
+    private final NoteCardClickListener listener;
 
-    public NoteAdapter(Context context, List<Note> data, NoteCardClickListener listener) {
-        this.data = data;
+    public NoteAdapter(Context context, LiveData<List<Note>> data, NoteCardClickListener listener) {
+        super(DIFF_CALLBACK);
+        this.notes = data;
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void refreshListData(List<Note> newData) {
-        this.data = newData;
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        binding = FeedItemCardBinding.inflate(inflater, viewGroup, false);
+        Log.d(TAG, "onCreateViewHolder");
+        return new ViewHolder(binding, listener );
     }
 
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        Note note = Objects.requireNonNull(notes.getValue()).get(position);
+        viewHolder.bind(note, binding);
+        Log.d(TAG, "onBindViewHolder number  " + note.getNumber() + " text " + note.getTextNote() + " position " + viewHolder.getAdapterPosition());
+    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Note>() {
+                @Override
+                public boolean areItemsTheSame(
+                        @NonNull Note oldNote, @NonNull Note newNote) {
+                    return oldNote.getNumber() == newNote.getNumber();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull Note oldNote, @NonNull Note newNote) {
+                    return oldNote.equals(newNote);
+                }
+            };
+
+
+    class ViewHolder extends RecyclerView.ViewHolder{
         Note note;
 
-        public ViewHolder(View view) {
-            super(view);
+        public ViewHolder(FeedItemCardBinding binding, NoteCardClickListener listener) {
+            super(binding.getRoot());
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!listener.noteIsSelectedState()){
+                        Log.d(TAG, "Short unselected click note " + note.getTextNote() +" position " + getAdapterPosition());
+                        listener.onFrameClick(note);
+                    } else {
+                        if (listener.getTempSelectedNotes().contains(note)) {
+                            Log.d(TAG,"onClick unselect note " + note.getTextNote() +" position " + getAdapterPosition());
+                            v.setAlpha(1F);
+                            listener.unselectNote(note);
+                        } else {
+                            Log.d(TAG, "onClick select note " + note.getTextNote() +" position " + getAdapterPosition());
+                            v.setAlpha(0.5F);
+                            listener.onFrameLongClick(note);
+                        }
+                    }
+                }
+            });
+
+            binding.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener.getTempSelectedNotes().contains(note)) {
+                        Log.d(TAG,"onLongClick unselect note " + note.getTextNote() +" position " + getAdapterPosition());
+                        v.setAlpha(1F);
+                        listener.unselectNote(note);
+                    } else {
+                        Log.d(TAG, "onLongClick select note " + note.getTextNote() +" position " + getAdapterPosition());
+                        v.setAlpha(0.5F);
+                        listener.onFrameLongClick(note);
+                    }
+                    return true;
+                }
+            });
         }
 
         public void bind(Note note, FeedItemCardBinding binding) {
@@ -49,44 +116,22 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         }
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        binding = FeedItemCardBinding.inflate(inflater, viewGroup, false);
-        return new ViewHolder(binding.getRoot());
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Note note = data.get(position);
-        viewHolder.bind(note, binding);
-
-        binding.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onFrameClick(note);
-                Log.d("MW-NA", "onFrameClick " + note.getNumber() + " " + note.getTextNote());
-            }
-        });
-
-        binding.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public boolean onLongClick(View v) {
-                v.setAlpha(0.5F);
-                listener.onFrameLongClick(note);
-                Log.d("MW-NA", "onLongClick " + note.getNumber() + " " + note.getTextNote());
-                return true;
-            }
-        });
-
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return data.size();
+        //Log.d(TAG, "getItemCount call");
+        return Objects.requireNonNull(notes.getValue()).size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        //Log.d(TAG, "getItemId call");
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        //Log.d(TAG, "getItemViewType call");
+        return position;
+    }
 
 }

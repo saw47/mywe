@@ -23,8 +23,11 @@
                 android:id="@+id/textFieldValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:gravity="start|top"
                 android:minHeight="240dp"
                 android:layout_margin="12dp"
+                android:padding="12dp"
                 >
             </EditText>
 

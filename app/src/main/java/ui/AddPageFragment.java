@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.github.saw47.mywe.databinding.FragmentAddPageBinding;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import util.InputManager;
 import viewmodel.ViewModelMain;
 
 public class AddPageFragment extends Fragment {
@@ -42,11 +44,9 @@ public class AddPageFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
         binding = FragmentAddPageBinding.inflate(inflater, container, false);
 
-        binding.textFieldValue.requestFocus();
-        ((InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(
-                InputMethodManager.SHOW_FORCED,
-                InputMethodManager.HIDE_IMPLICIT_ONLY
-        );
+        InputManager.showKeyboard(this.requireContext(), binding.textFieldValue);  //TODO this not work
+
+        Log.d(TAG, "onCreateView");
 
         if (model.tempNote != null) {
             binding.textFieldValue.setText(model.tempNote.getTextNote());
@@ -68,8 +68,7 @@ public class AddPageFragment extends Fragment {
 
     @Override
     public void onStop() {
-        ((InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(binding.textFieldValue.getWindowToken(), 0);
+        InputManager.hideKeyboard(this.getContext()); //TODO this not work
         super.onStop();
     }
 

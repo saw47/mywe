@@ -32,7 +32,6 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private ViewModelMain model;
     private NoteAdapter adapter;
-    private LiveData<List<Note>> notesLiveData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,34 +43,49 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
-        notesLiveData = model.data;
-        binding = FragmentMainBinding.inflate(inflater, container, false);
-        adapter = new NoteAdapter(this.getContext(), Objects.requireNonNull(model.data.getValue()), model);
 
+        binding = FragmentMainBinding.inflate(inflater, container, false);
+
+        adapter = new NoteAdapter(this.getContext(), model.data, model);
+        binding.mainRv.setItemAnimator(null);
         binding.mainRv.setAdapter(adapter);
 
-        notesLiveData.observe(getViewLifecycleOwner(), new Observer() {
+        model.data.observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onChanged (Object o) {
-                adapter.refreshListData(Objects.requireNonNull(notesLiveData.getValue()));
-                Log.d(TAG, "onChanged qty notes " + notesLiveData.getValue().size());
-                adapter.notifyDataSetChanged();
+            public void onChanged(List<Note> notes) {
+                Log.d(TAG, "onChanged in observer, call submitList notes size " + notes.size());
+                adapter.submitList(notes);
+                binding.mainRv.setAdapter(adapter);
             }
         });
 
 
+
+
         model.noteIsSelectedEvent.observe(getViewLifecycleOwner(), new Observer() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged (Object o) {
                 if (Boolean.FALSE.equals(model.noteIsSelectedEvent.getValue()))
                 {
-                    binding.mainRv.setAdapter(adapter);
+                    //binding.mainRv.setAdapter(adapter);
+                    //adapter.submitList(null);
+                    //adapter.submitList(model.data.getValue());
                 }
             }
         });
 
+        model.noteIsDeletedEvent.observe(getViewLifecycleOwner(), new Observer() {
+            @Override
+            public void onChanged (Object o) {
+                if (Boolean.TRUE.equals(model.noteIsDeletedEvent.getValue()))
+                {
+                    adapter.submitList(null);
+                    binding.mainRv.setAdapter(adapter);
+                    model.clearDeleteNotesLiveEvent();
+                }
+            }
+        });
 
         return binding.getRoot();
     }

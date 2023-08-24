@@ -66,10 +66,12 @@
                 <TextView
                     android:id="@+id/text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:gravity="start|top"
+                    android:padding="12dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/flags"
-                    tools:text="TEEEEEXXXXTTTTTT \n text \n ttteeext"
+                    tools:text="TEXT \n text"
                     >
                 </TextView>
             </androidx.constraintlayout.widget.ConstraintLayout>

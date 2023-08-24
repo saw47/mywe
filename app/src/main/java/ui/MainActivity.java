@@ -16,6 +16,9 @@ import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
 
 
+import java.util.List;
+
+import db.NoteEntity;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,10 +76,24 @@ public class MainActivity extends AppCompatActivity {
 
         binding.menuButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                model.tempClick();
+
+
+                /* TODO temp!!!
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "¯\\_(ツ)_/¯  Yet not implemented", Toast.LENGTH_SHORT);
                 toast.show();
                 //TODO not implemented
+
+                 */
+            }
+        });
+
+        model.isDataChanged.observe(this, new Observer<List<NoteEntity>>() {
+            @Override
+            public void onChanged(List<NoteEntity> entities) {
+                model.refreshDataList();
             }
         });
 
@@ -97,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                    if (Boolean.TRUE.equals(model.noteIsSelectedEvent.getValue())) {
                        state = MAIN_FRAGMENT_DEL_ITEM;
                        showDeleteItemFragmentAttr();
+                   } else {
+                       state = MAIN_FRAGMENT_GENERAL;
+                       showMainFragmentAttr();
                    }
                 }
         });
