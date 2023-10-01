@@ -2,41 +2,35 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "204b656755deb902b4fe9fc2e6f94c75",
+    "identityHash": "a1c01d1ab1395e95b3119cd7f512f18d",
     "entities": [
       {
         "tableName": "noteTable",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `textNote` TEXT, `deadLine` INTEGER, `delayReminder` INTEGER NOT NULL, `important` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `textNote` TEXT, `isSportNote` INTEGER NOT NULL, `isActualNote` TEXT)",
         "fields": [
           {
-            "fieldPath": "mNumber",
+            "fieldPath": "entityNumber",
             "columnName": "number",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "mTextNote",
+            "fieldPath": "entityTextNote",
             "columnName": "textNote",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "mDeadLine",
-            "columnName": "deadLine",
+            "fieldPath": "entityIsSportNote",
+            "columnName": "isSportNote",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entityNoteState",
+            "columnName": "isActualNote",
+            "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "mDelayReminder",
-            "columnName": "delayReminder",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "mImportant",
-            "columnName": "important",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -52,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '204b656755deb902b4fe9fc2e6f94c75')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a1c01d1ab1395e95b3119cd7f512f18d')"
     ]
   }
 }

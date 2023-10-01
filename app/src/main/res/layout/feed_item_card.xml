@@ -30,16 +30,26 @@
                     android:id="@+id/flags"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/text"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     >
-
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sport_note_flag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:src="@drawable/baseline_run_circle_24"
+                        >
+                    </ImageView>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/important_flag"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/sport_note_flag"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:src="@drawable/ic_baseline_label_important_24"
                         >
                     </ImageView>
@@ -50,6 +60,8 @@
                         android:id="@+id/notification_flag"
                         app:layout_constraintStart_toEndOf="@id/important_flag"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:src="@drawable/ic_baseline_notifications_24"
                         >
                     </ImageView>
@@ -60,6 +72,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="DeadLineText"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         >
                     </TextView>
                 </androidx.constraintlayout.widget.ConstraintLayout>

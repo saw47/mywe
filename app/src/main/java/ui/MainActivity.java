@@ -14,11 +14,13 @@ import android.widget.Toast;
 
 import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
+import com.google.android.material.tabs.TabLayout;
 
 
 import java.util.List;
 
 import db.NoteEntity;
+import util.TabPositionState;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         model = new ViewModelProvider(this).get(ViewModelMain.class);
+        model.setFirstTimeTabPosition();
+
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
@@ -76,17 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding.menuButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 model.tempClick();
-
-
-                /* TODO temp!!!
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "¯\\_(ツ)_/¯  Yet not implemented", Toast.LENGTH_SHORT);
                 toast.show();
                 //TODO not implemented
-
-                 */
             }
         });
 
@@ -121,6 +120,23 @@ public class MainActivity extends AppCompatActivity {
                 }
         });
 
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                model.setTabPosition(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                //TODO not implemented
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                //TODO not implemented
+            }
+        });
+
 
         setContentView(binding.getRoot());
     }
@@ -130,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
                 model.clearTempEntity();
+                super.onBackPressed();
+                this.finish();
                 break;
             case ADD_ITEM_FRAGMENT:
                 model.clearTempEntity();
@@ -179,17 +197,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void showAddPageFragmentAttr(){
         binding.fab.setImageResource(R.drawable.ic_baseline_done_outline_24);
         binding.menuButton.hide();
         binding.tabsFrameLayout.setVisibility(View.GONE);
-        binding.typeSomethingTextView.setVisibility(View.VISIBLE);
+        //binding.typeSomethingTextView.setVisibility(View.VISIBLE);
     }
     public void showMainFragmentAttr(){
         binding.fab.setImageResource(R.drawable.ic_baseline_add_24);
         binding.menuButton.show();
-        binding.typeSomethingTextView.setVisibility(View.GONE);
+        //binding.typeSomethingTextView.setVisibility(View.GONE);
         binding.tabsFrameLayout.setVisibility(View.VISIBLE);
     }
 

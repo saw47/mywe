@@ -7,18 +7,16 @@ public class Transform {
         return new NoteEntity
                 (note.getNumber(),
                  note.getTextNote(),
-                 note.getDeadLine(),
-                 note.getDelayReminder(),
-                 note.getImportant()
+                 note.getIsSportNote(),
+                 note.getNoteState()
                 );
     }
 
     public static Note toNote(NoteEntity entity) {
         return new Note.Builder(entity.entityTextNote)
                 .number(entity.entityNumber)
-                .deadLine(entity.entityDeadLine)
-                .delayReminder(entity.entityDelayReminder)
-                .important(entity.entityImportant)
+                .isSportNote(entity.entityIsSportNote)
+                .noteState(entity.entityNoteState)
                 .build();
     }
 }

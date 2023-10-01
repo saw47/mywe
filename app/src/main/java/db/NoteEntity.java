@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 
 import object.Note;
+import util.TabPositionState;
 
 
 @Entity(tableName = "noteTable")
@@ -16,23 +17,19 @@ public class NoteEntity {
     int entityNumber = 0;
     @ColumnInfo(name = "textNote")
     String entityTextNote;
-    @ColumnInfo(name = "deadLine")
-    Long entityDeadLine;
-    @ColumnInfo(name = "delayReminder")
-    int entityDelayReminder;
-    @ColumnInfo(name = "important")
-    boolean entityImportant;
+    @ColumnInfo(name = "isSportNote")
+    boolean entityIsSportNote;
+    @ColumnInfo(name = "isActualNote")
+    TabPositionState entityNoteState;
 
     NoteEntity(int entityNumber,
                String entityTextNote,
-               Long entityDeadLine,
-               int entityDelayReminder,
-               boolean entityImportant) {
+               boolean entityIsSportNote,
+               TabPositionState entityNoteState) {
 
         this.entityNumber = entityNumber;
         this.entityTextNote = entityTextNote;
-        this.entityDeadLine = entityDeadLine;
-        this.entityDelayReminder = entityDelayReminder;
-        this.entityImportant = entityImportant;
+        this.entityIsSportNote = entityIsSportNote;
+        this.entityNoteState = entityNoteState;
     }
 }

@@ -50,17 +50,21 @@ public class AddPageFragment extends Fragment {
 
         if (model.tempNote != null) {
             binding.textFieldValue.setText(model.tempNote.getTextNote());
-            //TODO Add fill another fields
+            binding.isSportNoteSwitch.setChecked(model.tempNote.getIsSportNote());
+            Log.d(TAG, "isSportNoteSwitch -> " + model.tempNote.getIsSportNote());
         }
 
+        binding.isSportNoteSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            model.sportFlag = isChecked;
+            model.tempText = binding.textFieldValue.getText().toString();
+            Log.d(TAG, "sportFlag -> " + model.sportFlag);
+        });
 
         binding.textFieldValue.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 model.tempText = binding.textFieldValue.getText().toString();
             }
-
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
         return binding.getRoot();
@@ -71,5 +75,4 @@ public class AddPageFragment extends Fragment {
         InputManager.hideKeyboard(this.getContext()); //TODO this not work
         super.onStop();
     }
-
 }

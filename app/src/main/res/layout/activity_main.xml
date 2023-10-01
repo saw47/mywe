@@ -36,14 +36,6 @@
                 app:layout_collapseMode="pin"
                 android:layout_gravity="bottom"
                 >
-                <TextView
-                    android:id="@+id/type_something_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/type_something"
-                    android:textSize="@dimen/app_bar_text_size"
-                    >
-                </TextView>
                 <FrameLayout
                     android:id="@+id/tabs_frame_layout"
                     android:layout_width="match_parent"
@@ -54,7 +46,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="@dimen/tabs_margin"
-                        tools:visibility="gone"
                         >
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="0dp"

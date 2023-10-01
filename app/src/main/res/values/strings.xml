@@ -21,4 +21,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_button"><![CDATA[Menu & filer]]></string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="sport_btn_switch">Sport note</string>
 </resources>

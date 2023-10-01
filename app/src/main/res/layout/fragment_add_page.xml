@@ -6,11 +6,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/isSportNoteToggleField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="32dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textField"
+            >
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/is_sport_note_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sport_btn_switch"
+                android:layout_gravity="end"
+                android:layout_margin="12dp"
+                />
+        </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/textField"
             android:layout_width="match_parent"
@@ -18,6 +36,9 @@
             app:cardCornerRadius="24dp"
             android:layout_margin="12dp"
             android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/isSportNoteToggleField"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             >
             <EditText
                 android:id="@+id/textFieldValue"
@@ -25,45 +46,12 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:gravity="start|top"
-                android:minHeight="240dp"
+                android:minHeight="200dp"
                 android:layout_margin="12dp"
                 android:padding="12dp"
-                >
+                tools:ignore="LabelFor"
+                android:importantForAutofill="no">
             </EditText>
-
         </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/importantField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="32dp"
-            android:visibility="gone"
-            >
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/deadlineField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="32dp"
-            android:visibility="gone"
-            >
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/reminderField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="32dp"
-            android:visibility="gone"
-            >
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

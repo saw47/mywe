@@ -5,24 +5,22 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.FragmentMainBinding;
 
 import java.util.List;
-import java.util.Objects;
 
-import adapter.NoteAdapter;
+import rw.adapter.NoteAdapter;
 import object.Note;
+import rw.helper.NoteItemTouchHelperCallback;
 import viewmodel.ViewModelMain;
 
 public class MainFragment extends Fragment {
@@ -31,7 +29,8 @@ public class MainFragment extends Fragment {
 
     private FragmentMainBinding binding;
     private ViewModelMain model;
-    private NoteAdapter adapter;
+    private NoteAdapter mAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,24 +42,25 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
-
         binding = FragmentMainBinding.inflate(inflater, container, false);
 
-        adapter = new NoteAdapter(this.getContext(), model.data, model);
+        mAdapter = new NoteAdapter(this.getContext(), model.data, model);
         binding.mainRv.setItemAnimator(null);
-        binding.mainRv.setAdapter(adapter);
+        binding.mainRv.setAdapter(mAdapter);
+
+        ItemTouchHelper.Callback callback = new NoteItemTouchHelperCallback(mAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(binding.mainRv);
 
         model.data.observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Note> notes) {
                 Log.d(TAG, "onChanged in observer, call submitList notes size " + notes.size());
-                adapter.submitList(notes);
-                binding.mainRv.setAdapter(adapter);
+                mAdapter.submitList(notes);
+                binding.mainRv.setAdapter(mAdapter);
             }
         });
-
-
 
 
         model.noteIsSelectedEvent.observe(getViewLifecycleOwner(), new Observer() {
@@ -68,9 +68,9 @@ public class MainFragment extends Fragment {
             public void onChanged (Object o) {
                 if (Boolean.FALSE.equals(model.noteIsSelectedEvent.getValue()))
                 {
-                    //binding.mainRv.setAdapter(adapter);
-                    //adapter.submitList(null);
-                    //adapter.submitList(model.data.getValue());
+                    binding.mainRv.setAdapter(mAdapter);
+                    mAdapter.submitList(null);
+                    mAdapter.submitList(model.data.getValue());
                 }
             }
         });
@@ -80,8 +80,8 @@ public class MainFragment extends Fragment {
             public void onChanged (Object o) {
                 if (Boolean.TRUE.equals(model.noteIsDeletedEvent.getValue()))
                 {
-                    adapter.submitList(null);
-                    binding.mainRv.setAdapter(adapter);
+                    mAdapter.submitList(null);
+                    binding.mainRv.setAdapter(mAdapter);
                     model.clearDeleteNotesLiveEvent();
                 }
             }

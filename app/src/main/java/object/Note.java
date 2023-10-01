@@ -2,13 +2,14 @@ package object;
 
 import java.util.Objects;
 
+import util.TabPositionState;
+
 public final class Note {
 
     private final int number;
     private final String textNote;
-    private final Long deadLine;
-    private final int delayReminder;
-    private final boolean important;
+    private final boolean isSportNote;
+    private final TabPositionState noteState;
 
     public int getNumber(){
         return number;
@@ -16,23 +17,18 @@ public final class Note {
     public String getTextNote() {
         return textNote;
     }
-    public Long getDeadLine() {
-        return deadLine;
+    public boolean getIsSportNote() {
+        return isSportNote;
     }
-    public int getDelayReminder() {
-        return delayReminder;
-    }
-    public boolean getImportant(){
-        return important;
+    public TabPositionState getNoteState() {
+        return noteState;
     }
 
     public static class Builder {
         private final String textNote;
         private int number = 0;
-
-        private Long deadLine = 0L;
-        private int delayReminder = 0;
-        private boolean important = false;
+        private boolean isSportNote = false;
+        private TabPositionState noteState = TabPositionState.UNDEF;
 
         public Builder (String textNote)
         {
@@ -43,18 +39,14 @@ public final class Note {
             number = val;
             return this;
         }
-        public Builder deadLine(long val) {
-            deadLine = val;
+
+        public Builder isSportNote(boolean val) {
+            isSportNote = val;
             return this;
         }
 
-        public Builder delayReminder(int val) {
-            delayReminder = val;
-            return this;
-        }
-
-        public Builder important(boolean val) {
-            important = val;
+        public Builder noteState(TabPositionState state) {
+            noteState = state;
             return this;
         }
 
@@ -67,9 +59,8 @@ public final class Note {
     {
         this.number = builder.number;
         this.textNote = builder.textNote;
-        this.deadLine = builder.deadLine;
-        this.delayReminder = builder.delayReminder;
-        this.important = builder.important;
+        this.isSportNote = builder.isSportNote;
+        this.noteState = builder.noteState;
     }
 
     @Override
@@ -78,15 +69,14 @@ public final class Note {
         if (o == null || getClass() != o.getClass()) return false;
         Note note = (Note) o;
         return number == note.number &&
-               delayReminder == note.delayReminder &&
-               important == note.important &&
-               textNote.equals(note.textNote) &&
-               deadLine.equals(note.deadLine);
+                textNote.equals(note.textNote) &&
+                isSportNote == note.isSportNote &&
+                noteState == note.noteState;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, textNote, deadLine, delayReminder, important);
+        return Objects.hash(number, textNote, isSportNote, noteState);
     }
 }
 

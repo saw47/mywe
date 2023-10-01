@@ -16,7 +16,7 @@ public interface NoteDao {
     LiveData<List<NoteEntity>> getAll();
 
     @Delete
-    int delete(NoteEntity noteEntity);
+    void delete(NoteEntity noteEntity);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(NoteEntity noteEntity);
