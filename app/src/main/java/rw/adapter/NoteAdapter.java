@@ -102,6 +102,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                 }
             });
 
+
             binding.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -115,6 +116,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                     return true;
                 }
             });
+
         }
 
         public void bind(Note note, FeedItemCardBinding binding) {
