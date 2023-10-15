@@ -7,8 +7,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import androidx.fragment.app.FragmentManager;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -55,16 +60,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
         model = new ViewModelProvider(this).get(ViewModelMain.class);
-        model.setFirstTimeTabPosition();
-
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
-            Log.d(TAG, "onCreate savedInstanceState == null");
             state = MAIN_FRAGMENT_GENERAL;
             showMainFragmentAttr();
             fragmentManager.beginTransaction()
@@ -81,13 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
         binding.menuButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                model.tempClick();
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "¯\\_(ツ)_/¯  Yet not implemented", Toast.LENGTH_SHORT);
-                toast.show();
-                //TODO not implemented
+                startActivity(new Intent(v.getContext(), SettingsActivity.class));
             }
         });
+
 
         model.isDataChanged.observe(this, new Observer<List<NoteEntity>>() {
             @Override
@@ -105,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         model.noteIsSelectedEvent.observe(this, new Observer() {
             @Override
@@ -137,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         setContentView(binding.getRoot());
     }
 
@@ -167,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
     {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
-                Log.d(TAG, "fabOnClickHandler case MAIN_FRAGMENT");
                 state = ADD_ITEM_FRAGMENT;
                 showAddPageFragmentAttr();
                 fragmentManager.beginTransaction()
@@ -177,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
                 break;
             case ADD_ITEM_FRAGMENT:
-                Log.d(TAG, "fabOnClickHandler case ADD_ITEM_FRAGMENT");
                 model.saveNoteOnClick();
                 state = MAIN_FRAGMENT_GENERAL;
                 showMainFragmentAttr();
@@ -187,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
                 break;
             case MAIN_FRAGMENT_DEL_ITEM:
-                Log.d(TAG, "fabOnClickHandler case MAIN_FRAGMENT_DEL_ITEM");
                 model.deleteNotes();
                 state = MAIN_FRAGMENT_GENERAL;
                 showMainFragmentAttr();

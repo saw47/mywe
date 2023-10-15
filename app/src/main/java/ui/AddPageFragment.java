@@ -44,20 +44,16 @@ public class AddPageFragment extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(ViewModelMain.class);
         binding = FragmentAddPageBinding.inflate(inflater, container, false);
 
-        InputManager.showKeyboard(this.requireContext(), binding.textFieldValue);  //TODO this not work
-
-        Log.d(TAG, "onCreateView");
+        InputManager.showKeyboard(this.requireContext(), binding.textFieldValue);  //TODO this is not work
 
         if (model.tempNote != null) {
             binding.textFieldValue.setText(model.tempNote.getTextNote());
             binding.isSportNoteSwitch.setChecked(model.tempNote.getIsSportNote());
-            Log.d(TAG, "isSportNoteSwitch -> " + model.tempNote.getIsSportNote());
         }
 
         binding.isSportNoteSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.sportFlag = isChecked;
             model.tempText = binding.textFieldValue.getText().toString();
-            Log.d(TAG, "sportFlag -> " + model.sportFlag);
         });
 
         binding.textFieldValue.addTextChangedListener(new TextWatcher() {
@@ -72,7 +68,7 @@ public class AddPageFragment extends Fragment {
 
     @Override
     public void onStop() {
-        InputManager.hideKeyboard(this.getContext()); //TODO this not work
+        InputManager.hideKeyboard(this.getContext()); //TODO this is not work
         super.onStop();
     }
 }

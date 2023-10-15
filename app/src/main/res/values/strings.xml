@@ -3,7 +3,7 @@
     <string name="add_new_note_button">Add new note</string>
     <string name="active">Active</string>
     <string name="inactive_task">Inactive</string>
-    <string name="sawe_item_button">save</string>
+    <string name="save_item_button">save</string>
     <string name="type_something">type something</string>
     <string name="all">All</string>
     <string name="old">Old</string>
@@ -22,4 +22,6 @@
     <string name="menu_button"><![CDATA[Menu & filer]]></string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="sport_btn_switch">Sport note</string>
+    <string name="not_impl_text">Yet not implemented</string>
+    <string name="back_button">Back</string>
 </resources>

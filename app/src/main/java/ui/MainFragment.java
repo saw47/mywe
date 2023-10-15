@@ -21,6 +21,7 @@ import java.util.List;
 import rw.adapter.NoteAdapter;
 import object.Note;
 import rw.helper.NoteItemTouchHelperCallback;
+import util.TabPositionState;
 import viewmodel.ViewModelMain;
 
 public class MainFragment extends Fragment {
@@ -30,7 +31,6 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private ViewModelMain model;
     private NoteAdapter mAdapter;
-    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,15 +49,22 @@ public class MainFragment extends Fragment {
         binding.mainRv.setAdapter(mAdapter);
 
         ItemTouchHelper.Callback callback = new NoteItemTouchHelperCallback(mAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(binding.mainRv);
 
         model.data.observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Note> notes) {
-                Log.d(TAG, "onChanged in observer, call submitList notes size " + notes.size());
                 mAdapter.submitList(notes);
+                binding.mainRv.setAdapter(mAdapter);
+            }
+        });
+
+        model.tabStateChangeEvent.observe(getViewLifecycleOwner(), new Observer<TabPositionState>() {
+            @Override
+            public void onChanged(TabPositionState tabPositionState) {
+                mAdapter.submitList(null);
                 binding.mainRv.setAdapter(mAdapter);
             }
         });

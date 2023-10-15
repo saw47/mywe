@@ -34,7 +34,6 @@ public class NoteRepository {
 
     public void convertData() {
         if (entitiesData.getValue() != null) {
-            //data.setValue(new ArrayList<Note>());
             data.setValue(entitiesData.getValue()
                     .stream()
                     .map(Transform::toNote)
@@ -42,53 +41,21 @@ public class NoteRepository {
         }
     }
 
-
     public void insert(@NonNull Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             dao.insert(Transform.toEntity(note));
-            Log.d(TAG, "insert note " + note.getTextNote());
-            Log.d(TAG, "insert size after " + ((dao.getAll().getValue() != null) ? dao.getAll().getValue().size() : -96));
-            //refresh();
         });
     }
 
     public void update(@NonNull Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             dao.update(Transform.toEntity(note));
-            Log.d(TAG, "update note " + note.getTextNote());
-            //refresh();
         });
     }
 
     public void delete(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             dao.delete(Transform.toEntity(note));
-            Log.d(TAG, "delete note " + note.getTextNote());
         });
-        Log.d(TAG, "Done delete note " + note.getTextNote());
     }
-
-    public void tempClickRepo() {
-        LiveData<List<NoteEntity>> l;
-        l = dao.getAll();
-        int allsize = (entitiesData.getValue() != null) ? entitiesData.getValue().size() : -12;
-        int lsize = (l.getValue() != null) ? l.getValue().size() : -133;
-        int datasize = (data.getValue() != null) ? data.getValue().size() : -1222222;
-        Log.d(TAG, "!!!! tempClickRepo !!!! ->> size  allNotesLiveData - " + allsize + " ;;;" +
-                " l  size -->>> " + lsize + "  datasize -> " + datasize );
-    }
-
-    /*
-    public void refresh() {
-        notes.clear();
-        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            try {
-                Objects.requireNonNull(dao.getAll().getValue()).forEach(noteEntity -> notes.add(Transform.toNote(noteEntity)));
-            } catch (NullPointerException npe) {
-                Log.d(TAG, "Database is empty");
-            }
-                });
-    }
-
-     */
 }

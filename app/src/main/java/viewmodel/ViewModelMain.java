@@ -23,6 +23,7 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         this.data = repository.data;
         this.isDataChanged = repository.entitiesData;
         this.noteIsSelected.setValue(Boolean.FALSE);
+        this.tabState.setValue(TabPositionState.ACTIVE);
     }
 
     private final String TAG = "MW-VM";
@@ -30,7 +31,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     public String tempText= "";
     public Note tempNote = null;
     public boolean sportFlag = false;
-    private TabPositionState tabState = TabPositionState.UNDEF;
 
     private final NoteRepository repository;
     public LiveData<List<NoteEntity>> isDataChanged;
@@ -39,48 +39,49 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
 
     private final List<Note> tempSelectedNotes = new ArrayList<>();
     @Override
-    public List<Note> getTempSelectedNotes(){
-        Log.d(TAG, "tempSelectedNotes SIZE - " + tempSelectedNotes.size());
+    public List<Note> getTempSelectedNotes()
+    {
         return tempSelectedNotes;
     }
-
     @Override
-    public void unselectNote(Note note) {
+    public void unselectNote(Note note)
+    {
         tempSelectedNotes.remove(note);
         if (tempSelectedNotes.size() == 0) {
             noteIsSelected.setValue(Boolean.FALSE);
         }
     }
 
-    public void setFirstTimeTabPosition() {
-        Log.d(TAG, "setFirstTimeTabPosition start - " + tabState);
-        if (tabState == TabPositionState.UNDEF) {
-            tabState = TabPositionState.ACTIVE;
-        } else {
-            throw new IllegalStateException("State " + tabState +
-                    " does not allow transition on start.");
-        }
-        Log.d(TAG, "setFirstTimeTabPosition end - " + tabState);
-    }
-
-    public void setTabPosition(int position) {
-        Log.d(TAG, "setTabPosition start - " + tabState);
+    private final MutableLiveData<TabPositionState> tabState = new MutableLiveData<>();
+    public LiveData<TabPositionState> tabStateChangeEvent = tabState;
+    public void setTabPosition(int position)
+    {
         if (position == TabPositionState.ACTIVE.getTabIndex()) {
-            tabState = TabPositionState.ACTIVE;
+            tabState.setValue(TabPositionState.ACTIVE);
         } else if (position == TabPositionState.OLD.getTabIndex()) {
-            tabState = TabPositionState.OLD;
+            tabState.setValue(TabPositionState.OLD);
         }
-        Log.d(TAG, "setTabPosition end - " + tabState);
+    }
+    @Override
+    public TabPositionState getTabState()
+    {
+        return this.tabStateChangeEvent.getValue();
     }
 
     private final MutableLiveData<SingleLiveEvent<Note>> frameClicked = new MutableLiveData<>();
     public LiveData<SingleLiveEvent<Note>> frameClickedSingleLiveEvent = frameClicked;
+    @Override
+    public void onFrameClick(Note note)
+    {
+        tempNote = note;
+        frameClicked.setValue(new SingleLiveEvent<>(note));
+    }
 
     private final MutableLiveData<Boolean> noteIsSelected = new MutableLiveData<>();
     public LiveData<Boolean> noteIsSelectedEvent = noteIsSelected;
     @Override
-    public boolean noteIsSelectedState() {
-        Log.d(TAG, "noteIsSelectedState 2 - " + Boolean.TRUE.equals(noteIsSelectedEvent.getValue()));
+    public boolean noteIsSelectedState()
+    {
         return Boolean.TRUE.equals(noteIsSelectedEvent.getValue());
     }
 
@@ -89,19 +90,14 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
 
 
     public void refreshDataList() {
-        Log.d(TAG, "refreshDataList -> ");
         repository.convertData();
     }
 
     public void saveNoteOnClick() {
-        Log.d(TAG, "saveNoteOnClick, tempNote -> " + tempNote + "; tempText -> " +
-                tempText + "sportflag -> " + sportFlag);
         if (tempText != null && !tempText.equals("")) {
             if (tempNote == null) {
                 tempNote = new Note.Builder(tempText).isSportNote(sportFlag)
                                    .noteState(TabPositionState.ACTIVE).build();
-                Log.d(TAG, "saveNoteOnClick, NOTE NEW text ->" + tempText + "sportflag -> "
-                        + sportFlag + "ACTUAL -> " + tempNote.getNoteState());
                 repository.insert(tempNote);
             } else {
                 int number = tempNote.getNumber();
@@ -116,7 +112,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
                 repository.update(tempNote);
             }
         }
-        Log.d(TAG, "saveNoteOnClick end repo size -> " + ((repository.data.getValue() != null) ? repository.data.getValue().size() : -45));
         clearTempEntity();
     }
 
@@ -137,7 +132,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
 
     private TabPositionState noteActualStateMutation(Note note) {
         TabPositionState state = note.getNoteState();
-        Log.d(TAG, "noteActualStateMutation start - " + tabState);
         switch (state) {
             case ACTIVE:
                 state = TabPositionState.OLD;
@@ -145,40 +139,24 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
             case OLD:
                 state = TabPositionState.ACTIVE;
                 break;
-            case UNDEF:
-                throw new IllegalStateException("State " + TabPositionState.UNDEF + " not allowed.");
         }
         return state;
     }
 
 
-    @Override
-    public TabPositionState getTabState() {
-        return this.tabState;
-    }
 
     public void deleteNotes() {
         for (Note tempSelectedNote : tempSelectedNotes) {
-            Log.d(TAG, "tempSelectedNote delete in tempSelectedNotes " + tempSelectedNote.getTextNote());
             repository.delete(tempSelectedNote);
         }
-        Log.d(TAG, "refresh repo from deleteNotes (DONE)");
         //repository.refresh();
         noteIsDeleted.setValue(true);
-    }
-
-    @Override
-    public void onFrameClick(Note note) {
-        tempNote = note;
-        frameClicked.setValue(new SingleLiveEvent<>(note));
     }
 
     @Override
     public void onFrameLongClick(Note note) {
         noteIsSelected.setValue(Boolean.TRUE);
         tempSelectedNotes.add(note);
-        Log.d(TAG, "note add to tempSelectedNotes " + note.getTextNote());
-        Log.d(TAG, "tempSelectedNotes size " + tempSelectedNotes.size());
     }
 
     public void clearDeleteNotesLiveEvent() {
@@ -193,10 +171,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         noteIsSelected.setValue(Boolean.FALSE);
     }
 
-    public void tempClick() {
-        //TODO debug
-        repository.tempClickRepo();
-    }
 }
 
 

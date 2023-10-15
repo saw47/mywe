@@ -43,7 +43,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         binding = FeedItemCardBinding.inflate(inflater, viewGroup, false);
-        Log.d(TAG, "onCreateViewHolder");
         return new ViewHolder(binding, listener);
     }
 
@@ -51,7 +50,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Note note = Objects.requireNonNull(getNotesValue()).get(position);
         viewHolder.bind(note, binding);
-        Log.d(TAG, "onBindViewHolder number  " + note.getNumber() + " text " + note.getTextNote() + " position " + viewHolder.getAdapterPosition());
     }
 
     public static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
@@ -78,7 +76,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
         Note note = Objects.requireNonNull(getNotesValue()).get(position);
         listener.changeActualNoteState(note);
         notifyItemRemoved(position);
-        // TODO hz how it work
     }
 
 
@@ -92,15 +89,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                 @Override
                 public void onClick(View v) {
                     if (!listener.noteIsSelectedState()) {
-                        Log.d(TAG, "Short unselected click note " + note.getTextNote() + " position " + getAdapterPosition());
                         listener.onFrameClick(note);
                     } else {
                         if (listener.getTempSelectedNotes().contains(note)) {
-                            Log.d(TAG, "onClick unselect note " + note.getTextNote() + " position " + getAdapterPosition());
                             v.setAlpha(1F);
                             listener.unselectNote(note);
                         } else {
-                            Log.d(TAG, "onClick select note " + note.getTextNote() + " position " + getAdapterPosition());
                             v.setAlpha(0.5F);
                             listener.onFrameLongClick(note);
                         }
@@ -112,11 +106,9 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                 @Override
                 public boolean onLongClick(View v) {
                     if (listener.getTempSelectedNotes().contains(note)) {
-                        Log.d(TAG, "onLongClick unselect note " + note.getTextNote() + " position " + getAdapterPosition());
                         v.setAlpha(1F);
                         listener.unselectNote(note);
                     } else {
-                        Log.d(TAG, "onLongClick select note " + note.getTextNote() + " position " + getAdapterPosition());
                         v.setAlpha(0.5F);
                         listener.onFrameLongClick(note);
                     }
@@ -142,30 +134,23 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
         }
     }
 
-
     @Override
     public int getItemCount() {
-        //Log.d(TAG, "getItemCount call");
         return Objects.requireNonNull(getNotesValue()).size();
     }
 
     @Override
     public long getItemId(int position) {
-        //Log.d(TAG, "getItemId call");
         return position;
     }
 
     @Override
     public int getItemViewType(int position) {
-        //Log.d(TAG, "getItemViewType call");
         return position;
     }
 
     private List<Note> getNotesValue() {
         TabPositionState st = listener.getTabState();
-        return (st == TabPositionState.OLD) ? Objects.requireNonNull(notes.getValue())
-                .stream().filter(note -> note.getNoteState().equals(st))
-                .collect(Collectors.toList()) : notes.getValue();
+        return Objects.requireNonNull(notes.getValue()).stream().filter(note -> note.getNoteState().equals(st)).collect(Collectors.toList());
     }
-
 }
