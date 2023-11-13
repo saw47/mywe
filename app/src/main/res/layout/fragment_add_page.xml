@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,7 +13,8 @@
             android:id="@+id/isSportNoteToggleField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="32dp"
+            app:cardCornerRadius="24dp"
+            android:layout_margin="12dp"
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sport_btn_switch"
                 android:layout_gravity="end"
-                android:layout_margin="12dp"
+                android:layout_margin="4dp"
+                />
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/add_reminder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_reminder_switch"
+                android:layout_gravity="start"
+                android:layout_margin="4dp"
                 />
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -46,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:gravity="start|top"
-                android:minHeight="200dp"
+                android:minHeight="160dp"
                 android:layout_margin="12dp"
                 android:padding="12dp"
                 tools:ignore="LabelFor"

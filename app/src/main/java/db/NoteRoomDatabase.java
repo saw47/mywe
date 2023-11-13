@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {NoteEntity.class},
-          version = 2
+          version = 1
           )
 public abstract class NoteRoomDatabase extends RoomDatabase {
     abstract NoteDao noteDao();

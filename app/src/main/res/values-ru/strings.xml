@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_new_note_button">Добавить новую заметку</string>
+    <string name="active">Активные</string>
+    <string name="old">Выполненные</string>
+    <string name="app_name">Моя Неделя</string>
+    <string name="menu_button">Меню и фильтр</string>
+    <string name="sport_btn_switch">Спорт</string>
+    <string name="not_impl_text">Еще не реализовано</string>
+    <string name="back_button">Назад</string>
+    <string name="add_reminder_switch">Напоминание</string>
+</resources>

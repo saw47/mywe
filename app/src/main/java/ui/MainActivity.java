@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.menuButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), SettingsActivity.class));
+                menuButtonClickHandler();
             }
         });
 
@@ -158,6 +159,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void menuButtonClickHandler()
+    {
+        switch (state) {
+            case MAIN_FRAGMENT_GENERAL:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case ADD_ITEM_FRAGMENT:
+                if (model.addReminderFlag) {
+                    model.createCalendarEvent();
+                }
+                model.saveNoteOnClick();
+                state = MAIN_FRAGMENT_GENERAL;
+                showMainFragmentAttr();
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.host_fragment, MainFragment.class, null)
+                        .commit();
+                break;
+        }
+    }
+
     public void fabOnClickHandler()
     {
         switch (state) {
@@ -168,15 +190,6 @@ public class MainActivity extends AppCompatActivity {
                         .setReorderingAllowed(true)
                         .replace(R.id.host_fragment, AddPageFragment.class, null)
                         .addToBackStack(STACK)
-                        .commit();
-                break;
-            case ADD_ITEM_FRAGMENT:
-                model.saveNoteOnClick();
-                state = MAIN_FRAGMENT_GENERAL;
-                showMainFragmentAttr();
-                fragmentManager.beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(R.id.host_fragment, MainFragment.class, null)
                         .commit();
                 break;
             case MAIN_FRAGMENT_DEL_ITEM:
@@ -190,19 +203,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showAddPageFragmentAttr(){
-        binding.fab.setImageResource(R.drawable.ic_baseline_done_outline_24);
-        binding.menuButton.hide();
+        binding.fab.hide();
+        binding.menuButton.setImageResource(R.drawable.ic_baseline_done_outline_24);
         binding.tabsFrameLayout.setVisibility(View.GONE);
-        //binding.typeSomethingTextView.setVisibility(View.VISIBLE);
     }
     public void showMainFragmentAttr(){
+        binding.fab.show();
         binding.fab.setImageResource(R.drawable.ic_baseline_add_24);
         binding.menuButton.show();
-        //binding.typeSomethingTextView.setVisibility(View.GONE);
+        binding.menuButton.setImageResource(R.drawable.ic_baseline_menu_24);
         binding.tabsFrameLayout.setVisibility(View.VISIBLE);
     }
 
     public void showDeleteItemFragmentAttr(){
+        binding.fab.show();
         binding.fab.setImageResource(R.drawable.ic_baseline_delete_24);
         binding.menuButton.hide();
         binding.tabsFrameLayout.setVisibility(View.GONE);

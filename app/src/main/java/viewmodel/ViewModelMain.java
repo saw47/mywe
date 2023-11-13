@@ -2,7 +2,7 @@ package viewmodel;
 
 
 import android.app.Application;
-import android.util.Log;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -35,6 +35,15 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     private final NoteRepository repository;
     public LiveData<List<NoteEntity>> isDataChanged;
     public LiveData<List<Note>> data;
+
+    // Reminder
+    public boolean addReminderFlag = false;
+    private final MutableLiveData<Boolean> addReminder = new MutableLiveData<>();
+    public LiveData<Boolean> addReminderEvent = addReminder;
+    public void createCalendarEvent() {
+        addReminder.setValue(true);
+    }
+
 
 
     private final List<Note> tempSelectedNotes = new ArrayList<>();
@@ -149,7 +158,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         for (Note tempSelectedNote : tempSelectedNotes) {
             repository.delete(tempSelectedNote);
         }
-        //repository.refresh();
         noteIsDeleted.setValue(true);
     }
 
@@ -169,6 +177,8 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         sportFlag  =false;
         tempSelectedNotes.clear();
         noteIsSelected.setValue(Boolean.FALSE);
+        addReminderFlag = false;
+        addReminder.setValue(false);
     }
 
 }

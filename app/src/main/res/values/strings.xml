@@ -2,26 +2,11 @@
 <resources>
     <string name="add_new_note_button">Add new note</string>
     <string name="active">Active</string>
-    <string name="inactive_task">Inactive</string>
-    <string name="save_item_button">save</string>
-    <string name="type_something">type something</string>
-    <string name="all">All</string>
     <string name="old">Old</string>
     <string name="app_name">My Week</string>
-    <string name="title_activity_app">AppActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_button"><![CDATA[Menu & filer]]></string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="sport_btn_switch">Sport note</string>
+    <string name="sport_btn_switch">Sport</string>
     <string name="not_impl_text">Yet not implemented</string>
     <string name="back_button">Back</string>
+    <string name="add_reminder_switch">Reminder</string>
 </resources>
