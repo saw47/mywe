@@ -48,7 +48,6 @@ public class AddPageFragment extends Fragment {
             public void onChanged (Object o) {
                 if (Boolean.TRUE.equals(model.addReminderEvent.getValue()))
                 {
-                    Log.d(TAG, ".addReminderEvent.observe is TRUE");
                     String title = binding.textFieldValue.getText().toString();
                     datePicker.show(getParentFragmentManager(), "DatePicker");
                     datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
