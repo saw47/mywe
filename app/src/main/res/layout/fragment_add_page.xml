@@ -1,65 +1,68 @@
-<ScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/isSportNoteToggleField"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            android:layout_margin="12dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/textField"
-            >
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/is_sport_note_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sport_btn_switch"
-                android:layout_gravity="end"
-                android:layout_margin="4dp"
-                />
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/add_reminder_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_reminder_switch"
-                android:layout_gravity="start"
-                android:layout_margin="4dp"
-                />
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/textField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            android:layout_margin="12dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/isSportNoteToggleField"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            >
-            <EditText
-                android:id="@+id/textFieldValue"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/isSportNoteToggleField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:gravity="start|top"
-                android:minHeight="160dp"
+                app:cardCornerRadius="24dp"
                 android:layout_margin="12dp"
-                android:padding="12dp"
-                tools:ignore="LabelFor"
-                android:importantForAutofill="no">
-            </EditText>
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textField"
+                >
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/is_sport_note_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sport_btn_switch"
+                    android:layout_gravity="end"
+                    android:layout_margin="4dp"
+                    />
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/add_reminder_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_reminder_switch"
+                    android:layout_gravity="start"
+                    android:layout_margin="4dp"
+                    />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/textField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp"
+                android:layout_margin="12dp"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/isSportNoteToggleField"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+                <EditText
+                    android:id="@+id/textFieldValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:gravity="start|top"
+                    android:minHeight="160dp"
+                    android:layout_margin="12dp"
+                    android:padding="12dp"
+                    tools:ignore="LabelFor"
+                    android:importantForAutofill="no">
+                </EditText>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

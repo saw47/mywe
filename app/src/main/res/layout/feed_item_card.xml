@@ -21,74 +21,29 @@
             >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="120dp"
-                >
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp">
+                <ImageView
+                    android:id="@+id/sport_note_flag"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/flags"
+                    android:src="@drawable/baseline_run_circle_24"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/text"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    >
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sport_note_flag"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:src="@drawable/baseline_run_circle_24"
-                        >
-                    </ImageView>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/important_flag"
-                        app:layout_constraintStart_toEndOf="@id/sport_note_flag"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:src="@drawable/ic_baseline_label_important_24"
-                        >
-                    </ImageView>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/notification_flag"
-                        app:layout_constraintStart_toEndOf="@id/important_flag"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:src="@drawable/ic_baseline_notifications_24"
-                        >
-                    </ImageView>
-                    <TextView
-                        android:id="@+id/deadLine"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="DeadLineText"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        >
-                    </TextView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/text"
+                    tools:visibility="visible">
+                </ImageView>
                 <TextView
                     android:id="@+id/text"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:gravity="start|top"
-                    android:padding="12dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/flags"
-                    tools:text="TEXT \n text"
-                    >
+                    android:minHeight="100dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/sport_note_flag"
+                    tools:text="@tools:sample/lorem/random">
                 </TextView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

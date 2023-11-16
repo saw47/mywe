@@ -1,7 +1,6 @@
 package rw.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,20 +9,15 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.github.saw47.mywe.databinding.FeedItemCardBinding;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import listener.NoteCardClickListener;
 import object.Note;
 import rw.helper.ItemTouchHelperAdapter;
-import rw.helper.ItemTouchHelperViewHolder;
 import util.TabPositionState;
 
-// 49 75 146
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> implements ItemTouchHelperAdapter {
     private final String TAG = "MW-NA";
 
@@ -57,7 +51,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                 @Override
                 public boolean areItemsTheSame(
                         @NonNull Note oldNote, @NonNull Note newNote) {
-                    return oldNote.getNumber() == newNote.getNumber();
+                    return (oldNote.getNumber() == newNote.getNumber()) &&
+                            (oldNote.getTextNote().equals(newNote.getTextNote()));
                 }
 
                 @Override
@@ -67,11 +62,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
             };
 
     @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        // TODO not impl
-    }
-
-    @Override
     public void onItemDismiss(int position) {
         Note note = Objects.requireNonNull(getNotesValue()).get(position);
         listener.changeActualNoteState(note);
@@ -79,12 +69,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         Note note;
 
         public ViewHolder(FeedItemCardBinding binding, NoteCardClickListener listener) {
             super(binding.getRoot());
-
             binding.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,23 +105,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
                     return true;
                 }
             });
-
         }
 
         public void bind(Note note, FeedItemCardBinding binding) {
             this.note = note;
             binding.text.setText(note.getTextNote());
             binding.sportNoteFlag.setVisibility((note.getIsSportNote()) ? View.VISIBLE : View.GONE );
-        }
-
-        @Override
-        public void onItemSelected() {
-            // TODO not impl
-        }
-
-        @Override
-        public void onItemClear() {
-            // TODO not impl
         }
     }
 
