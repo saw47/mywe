@@ -2,33 +2,35 @@ package ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
 import com.github.saw47.mywe.databinding.FragmentAddPageBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
+
 import java.util.Calendar;
 import java.util.Date;
+
 import util.InputManager;
 import viewmodel.ViewModelMain;
 
 public class AddPageFragment extends Fragment {
 
+    private final String TAG = "MW-APF";
     private FragmentAddPageBinding binding;
     private ViewModelMain model;
     private MaterialTimePicker timePicker;
     private MaterialDatePicker<Long> datePicker;
-    private final String TAG = "MW-APF";
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,8 @@ public class AddPageFragment extends Fragment {
 
         model.addReminderEvent.observe(getViewLifecycleOwner(), new Observer() {
             @Override
-            public void onChanged (Object o) {
-                if (Boolean.TRUE.equals(model.addReminderEvent.getValue()))
-                {
+            public void onChanged(Object o) {
+                if (Boolean.TRUE.equals(model.addReminderEvent.getValue())) {
                     String title = binding.textFieldValue.getText().toString();
                     datePicker.show(getParentFragmentManager(), "DatePicker");
                     datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
@@ -83,8 +84,12 @@ public class AddPageFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 model.tempText = binding.textFieldValue.getText().toString();
             }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
 
         return binding.getRoot();
@@ -128,7 +133,7 @@ public class AddPageFragment extends Fragment {
         intent.putExtra("beginTime", cal.getTimeInMillis());
         intent.putExtra("allDay", false);
         intent.putExtra("rrule", "FREQ=YEARLY");
-        intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
+        intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
         intent.putExtra("title", title);
         startActivity(intent);
     }

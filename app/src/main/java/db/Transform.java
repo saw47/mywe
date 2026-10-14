@@ -6,9 +6,9 @@ public class Transform {
     public static NoteEntity toEntity(Note note) {
         return new NoteEntity
                 (note.getNumber(),
-                 note.getTextNote(),
-                 note.getIsSportNote(),
-                 note.getNoteState()
+                        note.getTextNote(),
+                        note.getIsSportNote(),
+                        note.getNoteState()
                 );
     }
 

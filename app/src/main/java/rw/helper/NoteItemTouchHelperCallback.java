@@ -3,6 +3,7 @@ package rw.helper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
 import rw.adapter.NoteAdapter;
 
 public class NoteItemTouchHelperCallback extends ItemTouchHelper.Callback {

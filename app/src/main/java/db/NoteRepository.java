@@ -1,28 +1,23 @@
 package db;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.room.RoomDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import object.Note;
 
 public class NoteRepository {
+    public final LiveData<List<NoteEntity>> entitiesData;
+    public final MutableLiveData<List<Note>> data;
     private final String TAG = "MW-REP";
     private final NoteDao dao;
     NoteRoomDatabase db;
-    public final LiveData<List<NoteEntity>> entitiesData;
-    public final MutableLiveData<List<Note>> data;
 
     public NoteRepository(Application application) {
         db = NoteRoomDatabase.getDatabase(application);

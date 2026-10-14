@@ -2,6 +2,9 @@ package ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,17 +12,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.github.saw47.mywe.databinding.FragmentMainBinding;
 
 import java.util.List;
 
-import rw.adapter.NoteAdapter;
 import object.Note;
+import rw.adapter.NoteAdapter;
 import rw.helper.NoteItemTouchHelperCallback;
 import util.TabPositionState;
 import viewmodel.ViewModelMain;
@@ -72,9 +70,8 @@ public class MainFragment extends Fragment {
 
         model.noteIsSelectedEvent.observe(getViewLifecycleOwner(), new Observer() {
             @Override
-            public void onChanged (Object o) {
-                if (Boolean.FALSE.equals(model.noteIsSelectedEvent.getValue()))
-                {
+            public void onChanged(Object o) {
+                if (Boolean.FALSE.equals(model.noteIsSelectedEvent.getValue())) {
                     binding.mainRv.setAdapter(mAdapter);
                     mAdapter.submitList(null);
                     mAdapter.submitList(model.data.getValue());
@@ -84,9 +81,8 @@ public class MainFragment extends Fragment {
 
         model.noteIsDeletedEvent.observe(getViewLifecycleOwner(), new Observer() {
             @Override
-            public void onChanged (Object o) {
-                if (Boolean.TRUE.equals(model.noteIsDeletedEvent.getValue()))
-                {
+            public void onChanged(Object o) {
+                if (Boolean.TRUE.equals(model.noteIsDeletedEvent.getValue())) {
                     mAdapter.submitList(null);
                     binding.mainRv.setAdapter(mAdapter);
                     model.clearDeleteNotesLiveEvent();

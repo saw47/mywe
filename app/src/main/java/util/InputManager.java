@@ -2,7 +2,6 @@ package util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;

@@ -4,27 +4,44 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.saw47.mywe.databinding.FeedItemCardBinding;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import listener.NoteCardClickListener;
 import object.Note;
 import rw.helper.ItemTouchHelperAdapter;
 import util.TabPositionState;
 
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> implements ItemTouchHelperAdapter {
-    private final String TAG = "MW-NA";
+    public static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Note>() {
+                @Override
+                public boolean areItemsTheSame(
+                        @NonNull Note oldNote, @NonNull Note newNote) {
+                    return (oldNote.getNumber() == newNote.getNumber()) &&
+                            (oldNote.getTextNote().equals(newNote.getTextNote()));
+                }
 
+                @Override
+                public boolean areContentsTheSame(@NonNull Note oldNote, @NonNull Note newNote) {
+                    return oldNote.equals(newNote);
+                }
+            };
+    private final String TAG = "MW-NA";
     private final LiveData<List<Note>> notes;
-    private FeedItemCardBinding binding;
     private final LayoutInflater inflater;
     private final NoteCardClickListener listener;
+    private FeedItemCardBinding binding;
 
     public NoteAdapter(Context context, LiveData<List<Note>> data, NoteCardClickListener listener) {
         super(DIFF_CALLBACK);
@@ -46,21 +63,6 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
         viewHolder.bind(note, binding);
     }
 
-    public static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Note>() {
-                @Override
-                public boolean areItemsTheSame(
-                        @NonNull Note oldNote, @NonNull Note newNote) {
-                    return (oldNote.getNumber() == newNote.getNumber()) &&
-                            (oldNote.getTextNote().equals(newNote.getTextNote()));
-                }
-
-                @Override
-                public boolean areContentsTheSame(@NonNull Note oldNote, @NonNull Note newNote) {
-                    return oldNote.equals(newNote);
-                }
-            };
-
     @Override
     public void onItemDismiss(int position) {
         Note note = Objects.requireNonNull(getNotesValue()).get(position);
@@ -68,6 +70,25 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
         notifyItemRemoved(position);
     }
 
+    @Override
+    public int getItemCount() {
+        return Objects.requireNonNull(getNotesValue()).size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    private List<Note> getNotesValue() {
+        TabPositionState st = listener.getTabState();
+        return Objects.requireNonNull(notes.getValue()).stream().filter(note -> note.getNoteState().equals(st)).collect(Collectors.toList());
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         Note note;
@@ -110,27 +131,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
         public void bind(Note note, FeedItemCardBinding binding) {
             this.note = note;
             binding.text.setText(note.getTextNote());
-            binding.sportNoteFlag.setVisibility((note.getIsSportNote()) ? View.VISIBLE : View.GONE );
+            binding.sportNoteFlag.setVisibility((note.getIsSportNote()) ? View.VISIBLE : View.GONE);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return Objects.requireNonNull(getNotesValue()).size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    private List<Note> getNotesValue() {
-        TabPositionState st = listener.getTabState();
-        return Objects.requireNonNull(notes.getValue()).stream().filter(note -> note.getNoteState().equals(st)).collect(Collectors.toList());
     }
 }

@@ -6,8 +6,10 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import db.NoteEntity;
 import db.NoteRepository;
 import listener.NoteCardClickListener;
@@ -16,6 +18,27 @@ import util.SingleLiveEvent;
 import util.TabPositionState;
 
 public class ViewModelMain extends AndroidViewModel implements NoteCardClickListener {
+
+    private final String TAG = "MW-VM";
+    private final NoteRepository repository;
+    private final MutableLiveData<Boolean> addReminder = new MutableLiveData<>();
+    private final List<Note> tempSelectedNotes = new ArrayList<>();
+    private final MutableLiveData<TabPositionState> tabState = new MutableLiveData<>();
+    private final MutableLiveData<SingleLiveEvent<Note>> frameClicked = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> noteIsSelected = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> noteIsDeleted = new MutableLiveData<>();
+    public String tempText = "";
+    public Note tempNote = null;
+    public boolean sportFlag = false;
+    public LiveData<List<NoteEntity>> isDataChanged;
+    public LiveData<List<Note>> data;
+    // Reminder
+    public boolean addReminderFlag = false;
+    public LiveData<Boolean> addReminderEvent = addReminder;
+    public LiveData<TabPositionState> tabStateChangeEvent = tabState;
+    public LiveData<SingleLiveEvent<Note>> frameClickedSingleLiveEvent = frameClicked;
+    public LiveData<Boolean> noteIsSelectedEvent = noteIsSelected;
+    public LiveData<Boolean> noteIsDeletedEvent = noteIsDeleted;
 
     public ViewModelMain(Application application) {
         super(application);
@@ -26,87 +49,56 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         this.tabState.setValue(TabPositionState.ACTIVE);
     }
 
-    private final String TAG = "MW-VM";
-
-    public String tempText= "";
-    public Note tempNote = null;
-    public boolean sportFlag = false;
-
-    private final NoteRepository repository;
-    public LiveData<List<NoteEntity>> isDataChanged;
-    public LiveData<List<Note>> data;
-
-    // Reminder
-    public boolean addReminderFlag = false;
-    private final MutableLiveData<Boolean> addReminder = new MutableLiveData<>();
-    public LiveData<Boolean> addReminderEvent = addReminder;
     public void createCalendarEvent() {
         addReminder.setValue(true);
     }
 
-
-
-    private final List<Note> tempSelectedNotes = new ArrayList<>();
     @Override
-    public List<Note> getTempSelectedNotes()
-    {
+    public List<Note> getTempSelectedNotes() {
         return tempSelectedNotes;
     }
+
     @Override
-    public void unselectNote(Note note)
-    {
+    public void unselectNote(Note note) {
         tempSelectedNotes.remove(note);
         if (tempSelectedNotes.size() == 0) {
             noteIsSelected.setValue(Boolean.FALSE);
         }
     }
 
-    private final MutableLiveData<TabPositionState> tabState = new MutableLiveData<>();
-    public LiveData<TabPositionState> tabStateChangeEvent = tabState;
-    public void setTabPosition(int position)
-    {
+    public void setTabPosition(int position) {
         if (position == TabPositionState.ACTIVE.getTabIndex()) {
             tabState.setValue(TabPositionState.ACTIVE);
         } else if (position == TabPositionState.OLD.getTabIndex()) {
             tabState.setValue(TabPositionState.OLD);
         }
     }
+
     @Override
-    public TabPositionState getTabState()
-    {
+    public TabPositionState getTabState() {
         return this.tabStateChangeEvent.getValue();
     }
 
-    private final MutableLiveData<SingleLiveEvent<Note>> frameClicked = new MutableLiveData<>();
-    public LiveData<SingleLiveEvent<Note>> frameClickedSingleLiveEvent = frameClicked;
     @Override
-    public void onFrameClick(Note note)
-    {
+    public void onFrameClick(Note note) {
         tempNote = note;
         frameClicked.setValue(new SingleLiveEvent<>(note));
     }
 
-    private final MutableLiveData<Boolean> noteIsSelected = new MutableLiveData<>();
-    public LiveData<Boolean> noteIsSelectedEvent = noteIsSelected;
     @Override
-    public boolean noteIsSelectedState()
-    {
+    public boolean noteIsSelectedState() {
         return Boolean.TRUE.equals(noteIsSelectedEvent.getValue());
     }
-
-    private final MutableLiveData<Boolean> noteIsDeleted = new MutableLiveData<>();
-    public LiveData<Boolean> noteIsDeletedEvent = noteIsDeleted;
-
 
     public void refreshDataList() {
         repository.convertData();
     }
 
-    public void saveNoteOnClick() {
+    public void saveNoteAction() {
         if (tempText != null && !tempText.equals("")) {
             if (tempNote == null) {
                 tempNote = new Note.Builder(tempText).isSportNote(sportFlag)
-                                   .noteState(TabPositionState.ACTIVE).build();
+                        .noteState(TabPositionState.ACTIVE).build();
                 repository.insert(tempNote);
             } else {
                 int number = tempNote.getNumber();
@@ -114,10 +106,10 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
                 boolean isSportNote = sportFlag;
                 TabPositionState noteState = tempNote.getNoteState();
                 tempNote = new Note.Builder(textNote)
-                                    .number(number)
-                                    .isSportNote(isSportNote)
-                                    .noteState(noteState)
-                                    .build();
+                        .number(number)
+                        .isSportNote(isSportNote)
+                        .noteState(noteState)
+                        .build();
                 repository.update(tempNote);
             }
         }
@@ -131,10 +123,10 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         boolean isSportNote = note.getIsSportNote();
         TabPositionState noteState = noteActualStateMutation(note);
         tempNote = new Note.Builder(textNote)
-                            .number(number)
-                            .isSportNote(isSportNote)
-                            .noteState(noteState)
-                            .build();
+                .number(number)
+                .isSportNote(isSportNote)
+                .noteState(noteState)
+                .build();
         repository.update(tempNote);
         clearTempEntity();
     }
@@ -151,7 +143,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         }
         return state;
     }
-
 
 
     public void deleteNotes() {
@@ -174,7 +165,7 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     public void clearTempEntity() {
         tempNote = null;
         tempText = null;
-        sportFlag  =false;
+        sportFlag = false;
         tempSelectedNotes.clear();
         noteIsSelected.setValue(Boolean.FALSE);
         addReminderFlag = false;

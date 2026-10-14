@@ -1,46 +1,33 @@
 package ui;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import androidx.fragment.app.FragmentManager;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
 
-
 import java.util.List;
 
 import db.NoteEntity;
-import util.TabPositionState;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
-
-    private int state;
-
-    private final String TAG = "MW-MA";
 
     private final static int MAIN_FRAGMENT_DEL_ITEM = 0;
     private final static int MAIN_FRAGMENT_GENERAL = 2;
     private final static int ADD_ITEM_FRAGMENT = 4;
     private final static String nameVariableKey = "FRAGMENT_STATE";
     private final static String STACK = "MainStack";
-
+    private final String TAG = "MW-MA";
+    private int state;
     private ActivityMainBinding binding;
     private ViewModelMain model;
     private FragmentManager fragmentManager;
@@ -97,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
         model.frameClickedSingleLiveEvent.observe(this, new Observer() {
             @Override
             public void onChanged(Object o) {
-                if (state != MAIN_FRAGMENT_DEL_ITEM)
-                {
+                if (state != MAIN_FRAGMENT_DEL_ITEM) {
                     fabOnClickHandler();
                 }
             }
@@ -107,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
         model.noteIsSelectedEvent.observe(this, new Observer() {
             @Override
             public void onChanged(Object o) {
-                   if (Boolean.TRUE.equals(model.noteIsSelectedEvent.getValue())) {
-                       state = MAIN_FRAGMENT_DEL_ITEM;
-                       showDeleteItemFragmentAttr();
-                   } else {
-                       state = MAIN_FRAGMENT_GENERAL;
-                       showMainFragmentAttr();
-                   }
+                if (Boolean.TRUE.equals(model.noteIsSelectedEvent.getValue())) {
+                    state = MAIN_FRAGMENT_DEL_ITEM;
+                    showDeleteItemFragmentAttr();
+                } else {
+                    state = MAIN_FRAGMENT_GENERAL;
+                    showMainFragmentAttr();
                 }
+            }
         });
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -146,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 this.finish();
                 break;
             case ADD_ITEM_FRAGMENT:
+                model.saveNoteAction();
                 model.clearTempEntity();
                 state = MAIN_FRAGMENT_GENERAL;
                 fragmentManager.popBackStack();
@@ -159,8 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void menuButtonClickHandler()
-    {
+    public void menuButtonClickHandler() {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -169,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 if (model.addReminderFlag) {
                     model.createCalendarEvent();
                 }
-                model.saveNoteOnClick();
+                model.saveNoteAction();
                 state = MAIN_FRAGMENT_GENERAL;
                 showMainFragmentAttr();
                 fragmentManager.beginTransaction()
@@ -180,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void fabOnClickHandler()
-    {
+    public void fabOnClickHandler() {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
                 state = ADD_ITEM_FRAGMENT;
@@ -202,12 +187,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void showAddPageFragmentAttr(){
+    public void showAddPageFragmentAttr() {
         binding.fab.hide();
         binding.menuButton.setImageResource(R.drawable.ic_baseline_done_outline_24);
         binding.tabsFrameLayout.setVisibility(View.GONE);
     }
-    public void showMainFragmentAttr(){
+
+    public void showMainFragmentAttr() {
         binding.fab.show();
         binding.fab.setImageResource(R.drawable.ic_baseline_add_24);
         binding.menuButton.show();
@@ -215,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         binding.tabsFrameLayout.setVisibility(View.VISIBLE);
     }
 
-    public void showDeleteItemFragmentAttr(){
+    public void showDeleteItemFragmentAttr() {
         binding.fab.show();
         binding.fab.setImageResource(R.drawable.ic_baseline_delete_24);
         binding.menuButton.hide();
