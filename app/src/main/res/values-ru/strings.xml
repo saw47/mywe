@@ -9,4 +9,10 @@
     <string name="not_impl_text">Еще не реализовано</string>
     <string name="back_button">Назад</string>
     <string name="add_reminder_switch">Напоминание</string>
+    <string name="import_button">Импорт</string>
+    <string name="export_button">Экспорт</string>
+    <string name="import_success">Импортировано заметок: %1$d</string>
+    <string name="export_success">Экспортировано заметок: %1$d</string>
+    <string name="import_failed">Ошибка импорта</string>
+    <string name="export_failed">Ошибка экспорта</string>
 </resources>

@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 )
 public abstract class NoteRoomDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private static final RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
@@ -30,7 +30,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
     };
     private static volatile NoteRoomDatabase INSTANCE;
 
-    static NoteRoomDatabase getDatabase(final Context context) {
+    public static NoteRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (NoteRoomDatabase.class) {
                 if (INSTANCE == null) {
@@ -44,6 +44,6 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    abstract NoteDao noteDao();
+    public abstract NoteDao noteDao();
 }
 

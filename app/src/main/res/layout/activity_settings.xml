@@ -35,16 +35,31 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/not_impl_text"
-            android:textSize="24sp"
-            tools:layout_editor_absoluteX="-42dp"
-            tools:layout_editor_absoluteY="-126dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/import_button"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_margin="@dimen/card_view_margin"
+            android:text="@string/import_button"
+            app:cornerRadius="@dimen/card_view_corner_radius"
+            app:icon="@drawable/ic_baseline_import_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.button.MaterialButton>
 
-        </TextView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/export_button"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_margin="@dimen/card_view_margin"
+            android:text="@string/export_button"
+            app:cornerRadius="@dimen/card_view_corner_radius"
+            app:icon="@drawable/ic_baseline_save_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/import_button"></com.google.android.material.button.MaterialButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

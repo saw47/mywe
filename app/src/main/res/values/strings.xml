@@ -9,4 +9,10 @@
     <string name="not_impl_text">Yet not implemented</string>
     <string name="back_button">Back</string>
     <string name="add_reminder_switch">Reminder</string>
+    <string name="import_button">Import</string>
+    <string name="export_button">Export</string>
+    <string name="import_success">Imported %1$d notes</string>
+    <string name="export_success">Exported %1$d notes</string>
+    <string name="import_failed">Import failed</string>
+    <string name="export_failed">Export failed</string>
 </resources>
