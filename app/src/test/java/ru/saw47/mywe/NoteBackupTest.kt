@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken
 import backup.ImportException
 import backup.NoteBackup
 import db.NoteDao
-import db.NoteDto
 import db.NoteEntity
 import db.Transform
 import `object`.Note
@@ -21,7 +20,7 @@ import java.io.StringWriter
 class NoteBackupTest {
 
     private val gson = Gson()
-    private val listType = object : TypeToken<List<NoteDto>>() {}.type
+    private val listType = object : TypeToken<List<NoteEntity>>() {}.type
 
     private class FakeDao : NoteDao {
         val inserted = mutableListOf<NoteEntity>()
@@ -56,9 +55,9 @@ class NoteBackupTest {
         val count = NoteBackup.exportNotes(dao, writer)
 
         assertEquals(2, count)
-        val parsed: List<NoteDto> = gson.fromJson(writer.toString(), listType)
-        assertEquals(NoteDto.fromNote(note1), parsed[0])
-        assertEquals(NoteDto.fromNote(note2), parsed[1])
+        val parsed: List<NoteEntity> = gson.fromJson(writer.toString(), listType)
+        assertEquals(Transform.toEntity(note1), parsed[0])
+        assertEquals(Transform.toEntity(note2), parsed[1])
     }
 
     @Test

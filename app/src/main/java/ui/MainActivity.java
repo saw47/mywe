@@ -14,9 +14,6 @@ import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
-import db.NoteEntity;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,13 +70,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        model.isDataChanged.observe(this, new Observer<List<NoteEntity>>() {
-            @Override
-            public void onChanged(List<NoteEntity> entities) {
-                model.refreshDataList();
-            }
-        });
 
         model.frameClickedSingleLiveEvent.observe(this, new Observer() {
             @Override

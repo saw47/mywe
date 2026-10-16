@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.NoteEntity;
 import db.NoteRepository;
 import listener.NoteCardClickListener;
 import object.Note;
@@ -30,7 +29,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     public String tempText = "";
     public Note tempNote = null;
     public boolean sportFlag = false;
-    public LiveData<List<NoteEntity>> isDataChanged;
     public LiveData<List<Note>> data;
     // Reminder
     public boolean addReminderFlag = false;
@@ -44,7 +42,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         super(application);
         this.repository = new NoteRepository(application);
         this.data = repository.data;
-        this.isDataChanged = repository.entitiesData;
         this.noteIsSelected.setValue(Boolean.FALSE);
         this.tabState.setValue(TabPositionState.ACTIVE);
     }
@@ -88,10 +85,6 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     @Override
     public boolean noteIsSelectedState() {
         return Boolean.TRUE.equals(noteIsSelectedEvent.getValue());
-    }
-
-    public void refreshDataList() {
-        repository.convertData();
     }
 
     public void saveNoteAction() {
