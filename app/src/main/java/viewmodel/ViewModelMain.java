@@ -88,7 +88,7 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     }
 
     public void saveNoteAction() {
-        if (tempText != null && !tempText.equals("")) {
+        if (tempText != null && !tempText.isEmpty()) {
             if (tempNote == null) {
                 tempNote = new Note.Builder(tempText).isSportNote(sportFlag)
                         .noteState(TabPositionState.ACTIVE).build();

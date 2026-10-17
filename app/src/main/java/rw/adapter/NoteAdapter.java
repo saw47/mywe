@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.saw47.mywe.databinding.FeedItemCardBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import kotlin.collections.EmptyList;
 import listener.NoteCardClickListener;
 import object.Note;
 import rw.helper.ItemTouchHelperAdapter;
@@ -87,7 +89,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.ViewHolder> imple
 
     private List<Note> getNotesValue() {
         TabPositionState st = listener.getTabState();
-        return Objects.requireNonNull(notes.getValue()).stream().filter(note -> note.getNoteState().equals(st)).collect(Collectors.toList());
+        List<Note> out = notes.getValue();
+        return (out != null) ? out.stream().filter(note -> note.getNoteState().equals(st)).collect(Collectors.toList()) : new ArrayList<>();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
