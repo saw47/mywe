@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int MAIN_FRAGMENT_DEL_ITEM = 0;
     private final static int MAIN_FRAGMENT_GENERAL = 2;
-    private final static int ADD_ITEM_FRgit AGMENT = 4;
+    private final static int ADD_ITEM_FRAGMENT = 4;
     private final static String nameVariableKey = "FRAGMENT_STATE";
     private final static String STACK = "MainStack";
     private final String TAG = "MW-MA";
