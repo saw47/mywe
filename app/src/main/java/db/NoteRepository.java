@@ -4,36 +4,25 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import object.Note;
 
 public class NoteRepository {
-    public final LiveData<List<NoteEntity>> entitiesData;
-    public final MutableLiveData<List<Note>> data;
-    private final String TAG = "MW-REP";
+    public final LiveData<List<Note>> data;
     private final NoteDao dao;
     NoteRoomDatabase db;
 
     public NoteRepository(Application application) {
         db = NoteRoomDatabase.getDatabase(application);
         dao = db.noteDao();
-        entitiesData = dao.getAll();
-        data = new MutableLiveData<>(new ArrayList<>());
-        convertData();
-    }
-
-    public void convertData() {
-        if (entitiesData.getValue() != null) {
-            data.setValue(entitiesData.getValue()
-                    .stream()
-                    .map(Transform::toNote)
-                    .collect(Collectors.toList()));
-        }
+        data = Transformations.map(dao.getAll(), entities ->
+                entities.stream()
+                        .map(Transform::toNote)
+                        .collect(Collectors.toList()));
     }
 
     public void insert(@NonNull Note note) {

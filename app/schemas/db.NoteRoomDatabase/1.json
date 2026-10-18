@@ -2,32 +2,32 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a1c01d1ab1395e95b3119cd7f512f18d",
+    "identityHash": "e7d1685179801b01f38be9e151c0212a",
     "entities": [
       {
         "tableName": "noteTable",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `textNote` TEXT, `isSportNote` INTEGER NOT NULL, `isActualNote` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `textNote` TEXT NOT NULL, `isSportNote` INTEGER NOT NULL, `isActualNote` TEXT)",
         "fields": [
           {
-            "fieldPath": "entityNumber",
+            "fieldPath": "number",
             "columnName": "number",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "entityTextNote",
+            "fieldPath": "textNote",
             "columnName": "textNote",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
-            "fieldPath": "entityIsSportNote",
+            "fieldPath": "isSportNote",
             "columnName": "isSportNote",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "entityNoteState",
+            "fieldPath": "noteState",
             "columnName": "isActualNote",
             "affinity": "TEXT",
             "notNull": false
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a1c01d1ab1395e95b3119cd7f512f18d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e7d1685179801b01f38be9e151c0212a')"
     ]
   }
 }

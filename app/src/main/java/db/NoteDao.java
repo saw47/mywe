@@ -16,6 +16,9 @@ public interface NoteDao {
     @Query("SELECT * FROM noteTable ORDER BY number DESC")
     LiveData<List<NoteEntity>> getAll();
 
+    @Query("SELECT * FROM noteTable ORDER BY number DESC")
+    List<NoteEntity> getAllSync();
+
     @Delete
     void delete(NoteEntity noteEntity);
 

@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.NoteEntity;
 import db.NoteRepository;
 import listener.NoteCardClickListener;
 import object.Note;
@@ -19,9 +18,8 @@ import util.TabPositionState;
 
 public class ViewModelMain extends AndroidViewModel implements NoteCardClickListener {
 
-    private final String TAG = "MW-VM";
     private final NoteRepository repository;
-    private final MutableLiveData<Boolean> addReminder = new MutableLiveData<>();
+
     private final List<Note> tempSelectedNotes = new ArrayList<>();
     private final MutableLiveData<TabPositionState> tabState = new MutableLiveData<>();
     private final MutableLiveData<SingleLiveEvent<Note>> frameClicked = new MutableLiveData<>();
@@ -30,11 +28,11 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     public String tempText = "";
     public Note tempNote = null;
     public boolean sportFlag = false;
-    public LiveData<List<NoteEntity>> isDataChanged;
     public LiveData<List<Note>> data;
     // Reminder
-    public boolean addReminderFlag = false;
-    public LiveData<Boolean> addReminderEvent = addReminder;
+    public String tempReminderTextValue = null;
+
+
     public LiveData<TabPositionState> tabStateChangeEvent = tabState;
     public LiveData<SingleLiveEvent<Note>> frameClickedSingleLiveEvent = frameClicked;
     public LiveData<Boolean> noteIsSelectedEvent = noteIsSelected;
@@ -44,13 +42,8 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         super(application);
         this.repository = new NoteRepository(application);
         this.data = repository.data;
-        this.isDataChanged = repository.entitiesData;
         this.noteIsSelected.setValue(Boolean.FALSE);
         this.tabState.setValue(TabPositionState.ACTIVE);
-    }
-
-    public void createCalendarEvent() {
-        addReminder.setValue(true);
     }
 
     @Override
@@ -61,7 +54,7 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
     @Override
     public void unselectNote(Note note) {
         tempSelectedNotes.remove(note);
-        if (tempSelectedNotes.size() == 0) {
+        if (tempSelectedNotes.isEmpty()) {
             noteIsSelected.setValue(Boolean.FALSE);
         }
     }
@@ -90,12 +83,8 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         return Boolean.TRUE.equals(noteIsSelectedEvent.getValue());
     }
 
-    public void refreshDataList() {
-        repository.convertData();
-    }
-
     public void saveNoteAction() {
-        if (tempText != null && !tempText.equals("")) {
+        if (tempText != null && !tempText.isEmpty()) {
             if (tempNote == null) {
                 tempNote = new Note.Builder(tempText).isSportNote(sportFlag)
                         .noteState(TabPositionState.ACTIVE).build();
@@ -168,8 +157,11 @@ public class ViewModelMain extends AndroidViewModel implements NoteCardClickList
         sportFlag = false;
         tempSelectedNotes.clear();
         noteIsSelected.setValue(Boolean.FALSE);
-        addReminderFlag = false;
-        addReminder.setValue(false);
+        //addReminder.setValue(Boolean.FALSE);
+    }
+
+    public void clearReminderBuffer() {
+        tempReminderTextValue = null;
     }
 
 }

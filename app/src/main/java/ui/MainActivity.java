@@ -12,18 +12,21 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.saw47.mywe.R;
 import com.github.saw47.mywe.databinding.ActivityMainBinding;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.timepicker.MaterialTimePicker;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
-import db.NoteEntity;
 import viewmodel.ViewModelMain;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static int MAIN_FRAGMENT_DEL_ITEM = 0;
     private final static int MAIN_FRAGMENT_GENERAL = 2;
-    private final static int ADD_ITEM_FRAGMENT = 4;
+    private final static int ADD_ITEM_FRgit AGMENT = 4;
     private final static String nameVariableKey = "FRAGMENT_STATE";
     private final static String STACK = "MainStack";
     private final String TAG = "MW-MA";
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ViewModelMain model;
     private FragmentManager fragmentManager;
+    private MaterialTimePicker timePicker;
+    private MaterialDatePicker<Long> datePicker;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -73,13 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        model.isDataChanged.observe(this, new Observer<List<NoteEntity>>() {
-            @Override
-            public void onChanged(List<NoteEntity> entities) {
-                model.refreshDataList();
-            }
-        });
 
         model.frameClickedSingleLiveEvent.observe(this, new Observer() {
             @Override
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case ADD_ITEM_FRAGMENT:
                 model.saveNoteAction();
-                model.clearTempEntity();
+                calendarEventHandler();
                 state = MAIN_FRAGMENT_GENERAL;
                 fragmentManager.popBackStack();
                 showMainFragmentAttr();
@@ -146,16 +144,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void calendarEventHandler() {
+        if (model.tempReminderTextValue != null && !model.tempReminderTextValue.isEmpty()) {
+            pickerInstance(true);
+            String title = model.tempReminderTextValue;
+            datePicker.show(fragmentManager, "DatePicker");
+            datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                @Override
+                public void onPositiveButtonClick(Long selection) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(new Date(selection));
+                    timePickerDialog(cal, title);
+                }
+            });
+        }
+        model.clearReminderBuffer();
+    }
+
     public void menuButtonClickHandler() {
         switch (state) {
             case MAIN_FRAGMENT_GENERAL:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case ADD_ITEM_FRAGMENT:
-                if (model.addReminderFlag) {
-                    model.createCalendarEvent();
-                }
                 model.saveNoteAction();
+                calendarEventHandler();
                 state = MAIN_FRAGMENT_GENERAL;
                 showMainFragmentAttr();
                 fragmentManager.beginTransaction()
@@ -184,6 +197,43 @@ public class MainActivity extends AppCompatActivity {
                 model.clearTempEntity();
                 break;
         }
+    }
+
+    private void timePickerDialog(Calendar cal, String title) {
+        timePicker.show(fragmentManager, "TimePicker");
+        timePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cal.set(Calendar.HOUR, timePicker.getHour());
+                cal.set(Calendar.MINUTE, timePicker.getMinute());
+                calendarEvent(cal, title);
+                pickerInstance(false);
+            }
+        });
+    }
+
+    private void pickerInstance(Boolean isChecked) {
+        if (isChecked) {
+            datePicker = MaterialDatePicker.Builder
+                    .datePicker()
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build();
+            timePicker = new MaterialTimePicker.Builder().build();
+        } else {
+            datePicker = null;
+            timePicker = null;
+        }
+    }
+
+    private void calendarEvent(Calendar cal, String title) {
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("beginTime", cal.getTimeInMillis());
+        intent.putExtra("allDay", false);
+        intent.putExtra("rrule", "FREQ=YEARLY");
+        intent.putExtra("endTime", cal.getTimeInMillis() + 60 * 60 * 1000);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 
 
