@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import kotlin.collections.EmptyList;
 import listener.NoteCardClickListener;
 import object.Note;
 import rw.helper.ItemTouchHelperAdapter;
